@@ -32,64 +32,7 @@ export default function AuthPage() {
         router.replace('/dashboard')
         router.refresh()
         return
-      }
-      // if (isLogin) {
-      //   // Sign In
-      //   const { data, error } = await supabase.auth.signInWithPassword({
-      //     email,
-      //     password,
-      //   });
-
-      //   if (error) throw error;
-
-      //   // 🔑 убеждаемся, что сессия есть
-      //   // const session = await supabase.auth.getSession();
-
-      //   const session = data.session;
-
-      //   console.log("SESSION:", session);
-        
-      //   if (session) {
-      //     const res = await fetch('/api/auth/set-cookie', {
-      //       method: 'POST',
-      //       headers: { 'Content-Type': 'application/json' },
-      //       body: JSON.stringify({
-      //         access_token: session.access_token,
-      //         refresh_token: session.refresh_token,
-      //       }),
-      //     });
-
-      //     if (res.ok) {
-      //       // Перезагружаем страницу полностью, чтобы сервер увидел cookie
-      //       window.location.assign('/dashboard'); // 🔹 assign вместо href
-      //       return;
-      //     } else {
-      //         throw new Error('Не удалось записать cookie');
-      //     }
-      //     // if (res.ok) {
-      //     //   // ✅ После установки cookie делаем редирект
-      //     //   window.location.href = '/dashboard';
-      //     //   return; 
-      //     // } else {
-      //     //   throw new Error('Не удалось записать cookie');
-      //     // }
-      //   }
-        
-        // if (session) {
-        //   await fetch('/api/auth/set-cookie', {
-        //     method: 'POST',
-        //     headers: { 'Content-Type': 'application/json' },
-        //     body: JSON.stringify({
-        //       access_token: session.access_token,
-        //       refresh_token: session.refresh_token,
-        //     }),
-        //   });
-        // }
-
-        // router.replace('/dashboard');
-        // router.push('/dashboard');
-        // router.refresh(); 
-       else {
+      } else {
         // Sign Up
         const { error } = await supabase.auth.signUp({
           email,
@@ -158,7 +101,7 @@ export default function AuthPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 transition py-3.5 rounded-xl font-medium text-white text-lg disabled:cursor-not-allowed"
+              className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 transition py-3.5 rounded-xl font-medium text-white text-lg disabled:cursor-not-allowed cursor-pointer"
             >
               {loading 
                 ? 'Загрузка...' 
@@ -175,7 +118,7 @@ export default function AuthPage() {
                 setIsLogin(!isLogin);
                 setError(null);
               }}
-              className="text-gray-400 hover:text-white transition text-sm"
+              className="text-gray-400 hover:text-white transition text-sm cursor-pointer"
             >
               {isLogin 
                 ? "Нет аккаунта? Зарегистрироваться" 
