@@ -1,0 +1,52 @@
+// store/useAuth.ts
+
+import { create } from 'zustand'
+import * as authApi from '@/lib/auth'
+
+type AuthState = {
+  loading: boolean
+  error: string | null
+  user: any | null
+
+  login: (email: string, password: string) => Promise<void>
+  register: (email: string, password: string) => Promise<void>
+  logout: () => Promise<void>
+
+  setError: (error: string | null) => void
+}
+
+export const useAuthStore = create<AuthState>((set) => ({
+  loading: false,
+  error: null,
+  user: null,
+
+  setError: (error) => set({ error }),
+
+  login: async (email, password) => {
+    set({ loading: true, error: null })
+    try {
+      const data = await authApi.signIn(email, password)
+      set({ user: data.user })
+    } catch (err: any) {
+      set({ error: err.message })
+    } finally {
+      set({ loading: false })
+    }
+  },
+
+  register: async (email, password) => {
+    set({ loading: true, error: null })
+    try {
+      await authApi.signUp(email, password)
+    } catch (err: any) {
+      set({ error: err.message })
+    } finally {
+      set({ loading: false })
+    }
+  },
+
+  logout: async () => {
+    await authApi.signOut()
+    set({ user: null })
+  },
+}))
