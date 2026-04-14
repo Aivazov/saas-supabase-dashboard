@@ -5,13 +5,22 @@ import { useEffect, useMemo, useState } from "react";
 import { useTasks } from "@/store/useTasks"
 import { useGenerateTasks } from '@/hooks/useGenerateTasks'
 import StatusBadge from "@/components/StatusBadge";
-import TodoListbox from "@/components/TodoListbox";
-import { Status, Task } from "@/types/components";
+// import TodoListbox from "@/components/TodoListbox";
+// import { Status, Task } from "@/types/components";
+import { Status, FilterValue } from "@/constants/status"
 // import MyModal from "./MyModal";
 import DeleteTaskBtn from "./DeleteTaskBtn";
+import { StatusFilter } from "@/services/StatusFilter";
+import { StatusSelector } from "@/services/StatusSelector";
 
 interface PersonalDashboardClientProps {
   userEmail?: string | null;
+}
+
+interface Task {
+  id: string;
+  title: string;
+  status: Status;
 }
 
 const PersonalDashboardClient = ({userEmail}: PersonalDashboardClientProps) => {
@@ -22,7 +31,6 @@ const PersonalDashboardClient = ({userEmail}: PersonalDashboardClientProps) => {
   const [newTask, setNewTask] = useState('');
   const { generateTasks, loading: aiLoading } = useGenerateTasks()
 
-  // ✅ просто грузим данные
   useEffect(() => {
     fetchTasks();
   }, [fetchTasks]);
@@ -37,56 +45,14 @@ const PersonalDashboardClient = ({userEmail}: PersonalDashboardClientProps) => {
     updateTaskStatus(task.id, status)
   }
 
-  // const selectFilter = (e) => {
-  //   console.log(e);
-    
-  //   switch (e) {
-  //     case 'todo':
-  //       return 'todo';
-  //     case 'doing':
-  //       return 'doing';
-  //     case 'done':
-  //       return 'done';
-  //     default:
-  //       break;
-  //   }
-  // }
-
   const filteredTasks = useMemo(() => {
     if (filter === 'all') return tasks
     return tasks.filter(task => task.status === filter)
   }, [tasks, filter])
     
-  const handleFilterChange = (value: Status) => {
+  const handleFilterChange = (value: Status | FilterValue) => {
     setFilter(value)
   }
-
-  // const handleGenerate = async () => {
-  //   const topic = window.prompt("Введите тему для генерации задач:") || '';
-  //   if (!topic.trim()) return;
-
-  //   setAiLoading(true);
-
-  //   try {
-  //     const res = await fetch("/api/generate", {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify({ prompt: topic }),
-  //     });
-
-  //     const data = await res.json();
-      
-  //     if (data.tasks && Array.isArray(data.tasks)) {
-  //       for (const t of data.tasks) {
-  //         await addTask(t);
-  //       }
-  //     }
-  //   } catch (error) {
-  //     alert("Ошибка при генерации задач");
-  //   } finally {
-  //     setAiLoading(false);
-  //   }
-  // };
 
   return (
     <div className="max-w-4xl mx-auto text-white">
@@ -128,7 +94,7 @@ const PersonalDashboardClient = ({userEmail}: PersonalDashboardClientProps) => {
       <div className="flex items-center justify-start gap-3 mb-4">
         <h2>Filtering by status: </h2>
         <div>
-          <TodoListbox
+          <StatusFilter 
             value={filter}
             onChange={handleFilterChange}
           />
@@ -150,7 +116,7 @@ const PersonalDashboardClient = ({userEmail}: PersonalDashboardClientProps) => {
             {/* STATUS SELECTOR */}
             <div className="flex gap-2">
               
-              <TodoListbox
+              <StatusSelector 
                 value={task.status}
                 onChange={(e) => handleChangeStatus(e, task)}
               />
