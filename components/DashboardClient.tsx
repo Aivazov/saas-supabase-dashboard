@@ -165,11 +165,9 @@ export default function DashboardClient({ userEmail }: DashboardClientProps) {
 
           <div className="flex flex-wrap gap-2">
             {rooms.map((room) => (
-              <div key={room.id}>
-                <Link href={`/dashboard/${room.id}`}>
-                  <Button variant="outline">
-                    {room.name}
-                  </Button>
+              <div key={room.id} className="flex flex-col items-center justify-center rounded-md bg-gray-400 hover:bg-gray-500">
+                <Link href={`/dashboard/${room.id}`} className="p-3 w-full cursor-pointer flex items-center justify-center">
+                  {room.name}
                 </Link>
 
                 <RoomActions roomId={room.id} currentName={room.name} />

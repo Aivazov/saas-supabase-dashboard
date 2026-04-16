@@ -4,6 +4,9 @@
 import { useState } from "react";
 import { useRoomsStore  } from "@/store/useRooms";
 import { useRouter } from "next/navigation";
+import { BiSolidEdit } from "react-icons/bi";
+import { MdDeleteOutline } from "react-icons/md";
+
 
 type RoomActionsProps = {
   roomId: string;
@@ -42,16 +45,16 @@ export default function RoomActions({ roomId, currentName }: RoomActionsProps) {
   return (
     <div className="flex gap-2">
       <button
-        className="px-3 py-1 rounded bg-blue-600 text-white"
+        className="px-3 py-1 rounded cursor-pointer hover:bg-blue-100"
         onClick={() => setRenameOpen(true)}
       >
-        Rename
+        <BiSolidEdit />
       </button>
       <button
-        className="px-3 py-1 rounded bg-red-600 text-white"
+        className="px-3 py-1 rounded cursor-pointer hover:bg-blue-100"
         onClick={() => setDeleteOpen(true)}
       >
-        Delete
+        <MdDeleteOutline />
       </button>
 
       {/* Rename Modal */}
@@ -68,7 +71,7 @@ export default function RoomActions({ roomId, currentName }: RoomActionsProps) {
             <div className="flex justify-end gap-2">
               <button onClick={() => setRenameOpen(false)}>Cancel</button>
               <button
-                className="px-3 py-1 bg-blue-600 text-white rounded"
+                className="px-3 py-1 bg-blue-600 text-white rounded cursor-pointer hover:bg-blue-400"
                 onClick={handleRename}
               >
                 Save
@@ -87,7 +90,7 @@ export default function RoomActions({ roomId, currentName }: RoomActionsProps) {
             <div className="flex justify-end gap-2">
               <button onClick={() => setDeleteOpen(false)}>Cancel</button>
               <button
-                className="px-3 py-1 bg-red-600 text-white rounded"
+                className="px-3 py-1 bg-red-600 text-white rounded cursor-pointer hover:bg-red-400"
                 onClick={handleDelete}
               >
                 Delete

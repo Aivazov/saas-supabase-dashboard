@@ -30,7 +30,7 @@ export default function RoomPage() {
   async function loadMembers() {
     const { data } = await supabase
       .from("room_members")
-      .select("*, user:auth.users(email)")
+      .select("id, role, profiles(email)")
       .eq("room_id", roomId);
     setMembers(data || []);
   }
@@ -67,7 +67,7 @@ export default function RoomPage() {
     if (!inviteEmail) return;
     // ищем пользователя по email
     const { data: user } = await supabase
-      .from("auth.users")
+      .from("profiles")
       .select("id")
       .eq("email", inviteEmail)
       .single();
