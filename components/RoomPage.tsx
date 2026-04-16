@@ -93,7 +93,7 @@ export default function RoomPage() {
     <div className="p-8 max-w-6xl mx-auto space-y-6 text-white">
       <h1 className="text-3xl font-bold">{room?.name}</h1>
 
-      <Link href='/dashboard' >Back</Link>
+      <Link href='/dashboard' className="px-3 py-1 bg-blue-600 text-white rounded">Back</Link>
       {/* MEMBERS */}
       <Card>
         <CardHeader>

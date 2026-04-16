@@ -13,6 +13,8 @@ import {
 } from "@/components/ui/card";
 import { supabase } from "@/lib/supabase-client";
 import Link from "next/link";
+import RoomActions from "./RoomActions";
+import { useRoomsStore } from "@/store/useRooms";
 
 interface DashboardClientProps {
   userEmail?: string | null;
@@ -20,41 +22,53 @@ interface DashboardClientProps {
 
 export default function DashboardClient({ userEmail }: DashboardClientProps) {
 
-  const [rooms, setRooms] = useState<any[]>([]);
+  // const [rooms, setRooms] = useState<any[]>([]);
   const [currentRoomId, setCurrentRoomId] = useState<string | null>(null);
-  const [todos, setTodos] = useState<any[]>([]);
+  // const [todos, setTodos] = useState<any[]>([]);
 
   const [roomName, setRoomName] = useState("");
-  const [taskTitle, setTaskTitle] = useState("");
+  // const [taskTitle, setTaskTitle] = useState("");
 
-  async function loadRooms() {
-    const { data } = await supabase.from("rooms").select("*");
-    setRooms(data || []);
-
-    if (data?.length && !currentRoomId) {
-      setCurrentRoomId(data[0].id);
-    }
-  }
-
-  async function loadTodos(roomId: string) {
-    const { data } = await supabase
-      .from("room_todos")
-      .select("*")
-      .eq("room_id", roomId)
-      .order("created_at", { ascending: false });
-
-    setTodos(data || []);
-  }
+  const { rooms, fetchRooms, addRoom } = useRoomsStore();
 
   useEffect(() => {
-    loadRooms();
-  }, []);
+    fetchRooms();
+  }, [fetchRooms]);
 
   useEffect(() => {
-    if (currentRoomId) {
-      loadTodos(currentRoomId);
+    if (rooms.length && !currentRoomId) {
+      setCurrentRoomId(rooms[0].id);
     }
-  }, [currentRoomId]);
+  }, [rooms, currentRoomId]);
+
+  // async function loadRooms() {
+  //   const { data } = await supabase.from("rooms").select("*");
+  //   setRooms(data || []);
+
+  //   if (data?.length && !currentRoomId) {
+  //     setCurrentRoomId(data[0].id);
+  //   }
+  // }
+
+  // async function loadTodos(roomId: string) {
+  //   const { data } = await supabase
+  //     .from("room_todos")
+  //     .select("*")
+  //     .eq("room_id", roomId)
+  //     .order("created_at", { ascending: false });
+
+  //   setTodos(data || []);
+  // }
+
+  // useEffect(() => {
+  //   loadRooms();
+  // }, []);
+
+  // useEffect(() => {
+  //   if (currentRoomId) {
+  //     loadTodos(currentRoomId);
+  //   }
+  // }, [currentRoomId]);
 
   // async function createRoom() {
   //   if (!roomName) return;
@@ -96,42 +110,44 @@ export default function DashboardClient({ userEmail }: DashboardClientProps) {
         role: "admin"
       });
 
-      setRooms((prev) => [...prev, room]);
+      // setRooms((prev) => [...prev, room]);
+      addRoom(room);
       setCurrentRoomId(room.id);
       setRoomName("");
     }
   }
 
 
-  async function createTodo() {
-    if (!taskTitle || !currentRoomId) return;
+  // async function createTodo() {
+  //   if (!taskTitle || !currentRoomId) return;
 
-    const { data } = await supabase
-      .from("room_todos")
-      .insert({
-        title: taskTitle,
-        room_id: currentRoomId,
-      })
-      .select()
-      .single();
+  //   const { data } = await supabase
+  //     .from("room_todos")
+  //     .insert({
+  //       title: taskTitle,
+  //       room_id: currentRoomId,
+  //     })
+  //     .select()
+  //     .single();
 
-    if (data) {
-      setTodos((prev) => [data, ...prev]);
-      setTaskTitle("");
-    }
-  }
+  //   if (data) {
+  //     setTodos((prev) => [data, ...prev]);
+  //     setTaskTitle("");
+  //   }
+  // }
 
   // группировка задач по статусу
-  const columns = {
-    todo: todos.filter((t) => t.status === "todo"),
-    in_progress: todos.filter((t) => t.status === "in_progress"),
-    done: todos.filter((t) => t.status === "done"),
-  };
+  // const columns = {
+  //   todo: todos.filter((t) => t.status === "todo"),
+  //   in_progress: todos.filter((t) => t.status === "in_progress"),
+  //   done: todos.filter((t) => t.status === "done"),
+  // };
 
   return (
     <div className="p-8 max-w-6xl mx-auto space-y-6 text-white">
       <h1 className="text-3xl font-bold">Dashboard</h1>
 
+      
       {/* ROOM SECTION */}
       <Card>
         <CardHeader>
@@ -149,11 +165,16 @@ export default function DashboardClient({ userEmail }: DashboardClientProps) {
 
           <div className="flex flex-wrap gap-2">
             {rooms.map((room) => (
-              <Link key={room.id} href={`/dashboard/${room.id}`}>
-                <Button variant="outline">
-                  {room.name}
-                </Button>
-              </Link>
+              <div key={room.id}>
+                <Link href={`/dashboard/${room.id}`}>
+                  <Button variant="outline">
+                    {room.name}
+                  </Button>
+                </Link>
+
+                <RoomActions roomId={room.id} currentName={room.name} />
+
+              </div>
             ))}
             {/* {rooms.map((room) => (
               <Button
