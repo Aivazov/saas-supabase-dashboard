@@ -3,11 +3,7 @@
 import { Fragment } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
-
-type Option<T extends string> = {
-  value: T;
-  name: string;
-}
+import { Option } from '@/constants/status';
 
 type TodoListboxProps<T extends string>  = {
   value: T;
