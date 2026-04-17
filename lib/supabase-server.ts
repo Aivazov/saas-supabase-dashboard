@@ -32,3 +32,20 @@ export const getServerUser = async () => {
 
   return user
 }
+
+export const getServerProfile = async (userId: string) => {
+  const supabase = await getServerSupabase()
+
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('nickname')
+    .eq('id', userId)
+    .maybeSingle()
+
+  if (error) {
+    console.error(error)
+    return null
+  }
+
+  return data
+}
