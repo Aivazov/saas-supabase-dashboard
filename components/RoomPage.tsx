@@ -144,8 +144,16 @@ export default function RoomPage() {
       <Link href='/dashboard' className="px-3 py-1 bg-blue-600 text-white rounded">Back</Link>
       {/* MEMBERS */}
       <Card>
-        <CardHeader>
+        <CardHeader className="flex items-center justify-between">
           <CardTitle>Members</CardTitle>
+          <div className="flex gap-2">
+            <Input
+              placeholder="Invite by email"
+              value={inviteEmail}
+              onChange={(e) => setInviteEmail(e.target.value)}
+            />
+            <Button onClick={handleInvite}>Invite</Button>
+          </div>
         </CardHeader>
         <CardContent className="space-y-4">
           <ul className="space-y-2">
@@ -156,14 +164,7 @@ export default function RoomPage() {
               </li>
             ))}
           </ul>
-          <div className="flex gap-2">
-            <Input
-              placeholder="Invite by email"
-              value={inviteEmail}
-              onChange={(e) => setInviteEmail(e.target.value)}
-            />
-            <Button onClick={handleInvite}>Invite</Button>
-          </div>
+          
         </CardContent>
       </Card>
 
