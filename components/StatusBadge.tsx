@@ -1,5 +1,7 @@
 // components/StatusBadge.tsx
-import { Status } from "@/types/components";
+// import { Status } from "@/types/components";
+
+import { Status } from "@/constants/status";
 
 type StatusBadgeProps = {
   status: Status;

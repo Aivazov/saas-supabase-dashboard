@@ -9,7 +9,7 @@ type AuthState = {
   user: any | null
 
   login: (email: string, password: string) => Promise<void>
-  register: (email: string, password: string) => Promise<void>
+  register: (email: string, password: string, nickname: string) => Promise<void>
   logout: () => Promise<void>
 
   setError: (error: string | null) => void
@@ -34,10 +34,21 @@ export const useAuthStore = create<AuthState>((set) => ({
     }
   },
 
-  register: async (email, password) => {
+  // register: async (email, password) => {
+  //   set({ loading: true, error: null })
+  //   try {
+  //     await authApi.signUp(email, password)
+  //   } catch (err: any) {
+  //     set({ error: err.message })
+  //   } finally {
+  //     set({ loading: false })
+  //   }
+  // },
+
+  register: async (email, password, nickname) => {
     set({ loading: true, error: null })
     try {
-      await authApi.signUp(email, password)
+      await authApi.signUp(email, password, nickname)
     } catch (err: any) {
       set({ error: err.message })
     } finally {

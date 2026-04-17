@@ -1,13 +1,13 @@
-// app/personal-dashboard/layout.tsx
+// app/settings/layout.tsx
 
 import SidebarLayout from '@/components/SidebarLayout';
 import React from 'react'
 
-type PersonalDashboardLayoutProps = {
+type SettingsLayoutProps = {
   children: React.ReactNode;
 }
 
-const PersonalDashboardLayout = ({ children }: PersonalDashboardLayoutProps) => {
+const SettingsLayout = ({ children }: SettingsLayoutProps) => {
   
 
   return (
@@ -15,7 +15,6 @@ const PersonalDashboardLayout = ({ children }: PersonalDashboardLayoutProps) => 
       {/* Sidebar */}
       <SidebarLayout />
 
-      {/* Main */}
       <main className="flex-1 p-6 overflow-y-auto">
         {children}
       </main>
@@ -23,4 +22,4 @@ const PersonalDashboardLayout = ({ children }: PersonalDashboardLayoutProps) => 
   )
 }
 
-export default PersonalDashboardLayout
+export default SettingsLayout

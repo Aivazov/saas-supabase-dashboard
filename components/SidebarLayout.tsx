@@ -35,9 +35,15 @@ const SidebarLayout = (props: SidebarLayoutProps) => {
         {/* <Link href='/dashboard' className="text-left p-2 rounded hover:bg-gray-700 cursor-pointer"> */}
           Dashboard
         </Link>
+
         <Link href='/personal-dashboard' className={activeLink('/personal-dashboard')}>
         {/* <Link href='/personal-dashboard' className="text-left p-2 rounded hover:bg-gray-700 cursor-pointer"> */}
           Personal Tasks
+        </Link>
+
+        <Link href='/settings' className={activeLink('/settings')}>
+        {/* <Link href='/personal-dashboard' className="text-left p-2 rounded hover:bg-gray-700 cursor-pointer"> */}
+          Settings
         </Link>
       </nav>
     </aside>

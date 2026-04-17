@@ -3,11 +3,11 @@
 import SidebarLayout from '@/components/SidebarLayout';
 import React from 'react'
 
-type Props = {
+type DashboardLayoutProps = {
   children: React.ReactNode;
 }
 
-const DashboardLayout = ({ children }: Props) => {
+const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   
 
   return (

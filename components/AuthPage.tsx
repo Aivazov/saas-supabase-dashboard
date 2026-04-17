@@ -9,6 +9,7 @@ import { useAuthStore } from '@/store/useAuth'
 export default function AuthPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [nickname, setNickname] = useState('')
   const [isLogin, setIsLogin] = useState(true)
 
   const router = useRouter()
@@ -22,7 +23,8 @@ export default function AuthPage() {
       router.replace('/dashboard')
       router.refresh()
     } else {
-      await register(email, password)
+      // await register(email, password)
+      await register(email, password, nickname)
       setIsLogin(true)
     }
   }
@@ -44,6 +46,16 @@ export default function AuthPage() {
               placeholder="Email"
               className="w-full p-3 rounded bg-gray-800 text-white"
             />
+
+            {!isLogin && (
+              <input
+                type="text"
+                value={nickname}
+                onChange={(e) => setNickname(e.target.value)}
+                placeholder="Nickname"
+                className="w-full p-3 rounded bg-gray-800 text-white"
+              />
+            )}
 
             <input
               type="password"
