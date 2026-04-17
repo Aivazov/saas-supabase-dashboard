@@ -70,7 +70,12 @@ export default function RoomPage() {
       .from("profiles")
       .select("id")
       .eq("email", inviteEmail)
-      .single();
+      .maybeSingle();
+    
+    if (!user) {
+      alert("User not found")
+      return;
+    }
 
     if (user) {
       await supabase.from("room_members").insert({
