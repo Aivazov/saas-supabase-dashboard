@@ -1,3 +1,4 @@
+// components/RoomPage.tsx
 'use client';
 
 import { useEffect, useState } from "react";
@@ -7,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import Link from "next/link";
+import { useRoomDetailsStore } from "@/store/userRoomDetails";
+import { useRoomTasksStore } from "@/store/useRoomTasks";
 
 // interface RoomPageProps {
 //   roomdId: string;
@@ -14,79 +17,119 @@ import Link from "next/link";
 
 export default function RoomPage() {
 // export default function RoomPage({roomId}: RoomPageProps) {
-  const { roomId } = useParams(); // получаем roomId из URL
+  const { roomId } = useParams() as { roomId: string}; // getting roomId from URL
 
-  const [room, setRoom] = useState<any>(null);
-  const [members, setMembers] = useState<any[]>([]);
-  const [todos, setTodos] = useState<any[]>([]);
+  const {
+    room,
+    members,
+    loadRoom,
+    loadMembers,
+    inviteMember,
+  } = useRoomDetailsStore();
+
+  const {
+    todos,
+    loadTodos,
+    createTodo,
+  } = useRoomTasksStore();
+
+  // const [room, setRoom] = useState<any>(null);
+  // const [members, setMembers] = useState<any[]>([]);
+  // const [todos, setTodos] = useState<any[]>([]);
   const [taskTitle, setTaskTitle] = useState("");
   const [inviteEmail, setInviteEmail] = useState("");
 
-  async function loadRoom() {
-    const { data } = await supabase.from("rooms").select("*").eq("id", roomId).single();
-    setRoom(data);
+  const handleCreateTodo = async () => {
+    await createTodo(roomId as string, taskTitle)
   }
 
-  async function loadMembers() {
-    const { data } = await supabase
-      .from("room_members")
-      .select("id, role, profiles(email)")
-      .eq("room_id", roomId);
-    setMembers(data || []);
-  }
-
-  async function loadTodos() {
-    const { data } = await supabase
-      .from("room_todos")
-      .select("*")
-      .eq("room_id", roomId)
-      .order("created_at", { ascending: false });
-    setTodos(data || []);
+  const handleInvite = async () => {
+    await inviteMember(roomId as string, inviteEmail)
   }
 
   useEffect(() => {
-    loadRoom();
-    loadMembers();
-    loadTodos();
-  }, [roomId]);
+    if (!roomId) return;
 
-  async function createTodo() {
-    if (!taskTitle) return;
-    const { data } = await supabase
-      .from("room_todos")
-      .insert({ title: taskTitle, room_id: roomId })
-      .select()
-      .single();
-    if (data) {
-      setTodos((prev) => [data, ...prev]);
-      setTaskTitle("");
-    }
-  }
+    const id = roomId as string;
 
-  async function inviteMember() {
-    if (!inviteEmail) return;
-    // ищем пользователя по email
-    const { data: user } = await supabase
-      .from("profiles")
-      .select("id")
-      .eq("email", inviteEmail)
-      .maybeSingle();
+    loadRoom(id);
+    loadMembers(id);
+    loadTodos(id);
+  }, [roomId, loadRoom, loadMembers, loadTodos]);
+  // useEffect(() => {
+  //   if (!roomId) return;
+
+  //   loadRoom(roomId as string);
+  //   loadMembers(roomId as string);
+  //   loadTodos(roomId as string);
+  // }, [roomId]);
+
+  // async function loadRoom() {
+  //   const { data } = await supabase.from("rooms").select("*").eq("id", roomId).single();
+  //   setRoom(data);
+  // }
+
+  // async function loadMembers() {
+  //   const { data } = await supabase
+  //     .from("room_members")
+  //     .select("id, role, profiles(email, nickname)")
+  //     .eq("room_id", roomId);
+  //   setMembers(data || []);
+  // }
+
+  // async function loadTodos() {
+  //   const { data } = await supabase
+  //     .from("room_todos")
+  //     .select("*")
+  //     .eq("room_id", roomId)
+  //     .order("created_at", { ascending: false });
+  //   setTodos(data || []);
+  // }
+
+
+  // useEffect(() => {
+  //   loadRoom();
+  //   loadMembers();
+  //   loadTodos();
+  // }, [roomId]);
+
+  // async function createTodo() {
+  //   if (!taskTitle) return;
+  //   const { data } = await supabase
+  //     .from("room_todos")
+  //     .insert({ title: taskTitle, room_id: roomId })
+  //     .select()
+  //     .single();
+  //   if (data) {
+  //     setTodos((prev) => [data, ...prev]);
+  //     setTaskTitle("");
+  //   }
+  // }
+
+  // async function inviteMember() {
+  //   if (!inviteEmail) return;
+  //   // ищем пользователя по email
+  //   const { data: user } = await supabase
+  //     .from("profiles")
+  //     .select("id")
+  //     .eq("email", inviteEmail)
+  //     .maybeSingle();
     
-    if (!user) {
-      alert("User not found")
-      return;
-    }
+  //   if (!user) {
+  //     alert("User not found")
+  //     return;
+  //   }
 
-    if (user) {
-      await supabase.from("room_members").insert({
-        room_id: roomId,
-        user_id: user.id,
-        role: "member"
-      });
-      loadMembers();
-      setInviteEmail("");
-    }
-  }
+  //   if (user) {
+  //     await supabase.from("room_members").insert({
+  //       room_id: roomId,
+  //       user_id: user.id,
+  //       role: "member"
+  //     });
+  //     loadMembers();
+  //     setInviteEmail("");
+  //   }
+  // }
 
   const columns = {
     todo: todos.filter((t) => t.status === "todo"),
@@ -107,8 +150,8 @@ export default function RoomPage() {
         <CardContent className="space-y-4">
           <ul className="space-y-2">
             {members.map((m) => (
-              <li key={m.id} className="flex justify-between">
-                <span>{m.user?.email}</span>
+              <li key={m.id} className="flex justify-between bg-gray-300 hover:bg-gray-400 rounded-sm px-4 py-2">
+                <span>{m.profiles?.nickname || m.user?.email || 'Unknown user'}</span>
                 <span className="text-sm text-muted-foreground">{m.role}</span>
               </li>
             ))}
@@ -119,7 +162,7 @@ export default function RoomPage() {
               value={inviteEmail}
               onChange={(e) => setInviteEmail(e.target.value)}
             />
-            <Button onClick={inviteMember}>Invite</Button>
+            <Button onClick={handleInvite}>Invite</Button>
           </div>
         </CardContent>
       </Card>
@@ -136,7 +179,7 @@ export default function RoomPage() {
               value={taskTitle}
               onChange={(e) => setTaskTitle(e.target.value)}
             />
-            <Button onClick={createTodo}>Add</Button>
+            <Button onClick={handleCreateTodo}>Add</Button>
           </div>
 
           <div className="grid grid-cols-3 gap-4">
