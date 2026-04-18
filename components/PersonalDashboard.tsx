@@ -4,7 +4,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useTasks } from "@/store/useTasks"
 import { useGenerateTasks } from '@/hooks/useGenerateTasks'
-import StatusBadge from "@/components/StatusBadge";
+// import StatusBadge from "@/components/StatusBadge";
 // import TodoListbox from "@/components/TodoListbox";
 // import { Status, Task } from "@/types/components";
 import { Status, FilterValue } from "@/constants/status"
@@ -12,16 +12,18 @@ import { Status, FilterValue } from "@/constants/status"
 import DeleteTaskBtn from "./DeleteTaskBtn";
 import { StatusFilter } from "@/services/StatusFilter";
 import { StatusSelector } from "@/services/StatusSelector";
+import { Task } from "@/constants/task";
+import TaskComponent from "./Task/TaskComponent";
 
 interface PersonalDashboardClientProps {
   userEmail?: string | null;
 }
 
-interface Task {
-  id: string;
-  title: string;
-  status: Status;
-}
+// interface Task {
+//   id: string;
+//   title: string;
+//   status: Status;
+// }
 
 const PersonalDashboardClient = ({userEmail}: PersonalDashboardClientProps) => {
   const { tasks, fetchTasks, addTask, updateTaskStatus } = useTasks();
@@ -104,26 +106,27 @@ const PersonalDashboardClient = ({userEmail}: PersonalDashboardClientProps) => {
       {/* Tasks */}
       <div className="space-y-3">
         {filteredTasks.map(task => (
-          <div
-            key={task.id}
-            className="bg-gray-700 p-4 rounded-xl flex justify-between"
-          >
-            <div>
-              <p>{task.title}</p>
-              <StatusBadge status={task.status} />
-            </div>
+          <TaskComponent key={task.id} task={task} onChangeStatus={handleChangeStatus} />
+          // <div
+          //   key={task.id}
+          //   className="bg-gray-700 p-4 rounded-xl flex justify-between"
+          // >
+          //   <div>
+          //     <p>{task.title}</p>
+          //     <StatusBadge status={task.status} />
+          //   </div>
 
-            {/* STATUS SELECTOR */}
-            <div className="flex gap-2">
+          //   {/* STATUS SELECTOR */}
+          //   <div className="flex gap-2">
               
-              <StatusSelector 
-                value={task.status}
-                onChange={(e) => handleChangeStatus(e, task)}
-              />
+          //     <StatusSelector 
+          //       value={task.status}
+          //       onChange={(e) => handleChangeStatus(e, task)}
+          //     />
 
-              <DeleteTaskBtn taskId={task.id} />
-            </div>
-          </div>
+          //     <DeleteTaskBtn taskId={task.id} />
+          //   </div>
+          // </div>
         ))}
       </div>
     </div>

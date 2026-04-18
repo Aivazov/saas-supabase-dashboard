@@ -13,6 +13,7 @@ type RoomDetailsState = {
   loadRoom: (roomId: string) => Promise<void>;
   loadMembers: (roomId: string) => Promise<void>;
   inviteMember: (roomId: string, email: string) => Promise<void>;
+  deleteMember: (memberId: string, roomId: string) => Promise<void>;
 };
 
 export const useRoomDetailsStore = create<RoomDetailsState>((set, get) => ({
@@ -66,4 +67,34 @@ export const useRoomDetailsStore = create<RoomDetailsState>((set, get) => ({
 
     await get().loadMembers(roomId);
   },
+  
+  deleteMember: async (memberId, roomId) => {
+    const prevMembers = get().members;
+
+    // оптимистично убираем
+    set({
+      members: prevMembers.filter((m) => m.id !== memberId),
+    });
+
+    const { error } = await supabase
+      .from("room_members")
+      .delete()
+      .eq("id", memberId);
+
+    if (error) {
+      // откат если ошибка
+      set({ members: prevMembers, error: error.message });
+      return;
+    }
+  }
+  // deleteMember: async (memberId, roomId) => {
+  //   const { error } = await supabase
+  //     .from("room_members")
+  //     .delete()
+  //     .eq("id", memberId);
+    
+  //   if (error) return set({ error: error.message })
+    
+  //   await get().loadMembers(roomId)
+  // }
 }));

@@ -10,6 +10,8 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import Link from "next/link";
 import { useRoomDetailsStore } from "@/store/userRoomDetails";
 import { useRoomTasksStore } from "@/store/useRoomTasks";
+import TaskComponent from "./Task/TaskComponent";
+import { Status } from "@/constants/status";
 
 // interface RoomPageProps {
 //   roomdId: string;
@@ -25,12 +27,14 @@ export default function RoomPage() {
     loadRoom,
     loadMembers,
     inviteMember,
+    deleteMember
   } = useRoomDetailsStore();
 
   const {
     todos,
     loadTodos,
     createTodo,
+    updateRoomTaskStatus
   } = useRoomTasksStore();
 
   // const [room, setRoom] = useState<any>(null);
@@ -130,10 +134,21 @@ export default function RoomPage() {
   //     setInviteEmail("");
   //   }
   // }
+  // const handleDeleteMember = async (memberId, roomId) => {
+  //   await supabase
+  //     .from("room_members")
+  //     .delete()
+  //     .eq("id", memberId);
+  //   loadMembers(roomId);
+  // }
+
+  const handleChangeStatus = (status: Status, task: any) => {
+    updateRoomTaskStatus(task.id, status, roomId);
+  };
 
   const columns = {
     todo: todos.filter((t) => t.status === "todo"),
-    in_progress: todos.filter((t) => t.status === "in_progress"),
+    in_progress: todos.filter((t) => t.status === "doing"),
     done: todos.filter((t) => t.status === "done"),
   };
 
@@ -161,6 +176,14 @@ export default function RoomPage() {
               <li key={m.id} className="flex justify-between bg-gray-300 hover:bg-gray-400 rounded-sm px-4 py-2">
                 <span>{m.profiles?.nickname || m.user?.email || 'Unknown user'}</span>
                 <span className="text-sm text-muted-foreground">{m.role}</span>
+                <Button
+                  variant="destructive"
+                  className="cursor-pointer"
+                  size="sm"
+                  onClick={() => deleteMember(m.id, roomId)}
+                >
+                  Remove
+                </Button>
               </li>
             ))}
           </ul>
@@ -184,7 +207,16 @@ export default function RoomPage() {
           </div>
 
           <div className="grid grid-cols-3 gap-4">
-            {Object.entries(columns).map(([status, items]) => (
+            <div className="space-y-3">
+              {todos.map((task) => (
+                <TaskComponent
+                  key={task.id}
+                  task={task}
+                  onChangeStatus={handleChangeStatus}
+                />
+              ))}
+            </div>
+            {/* {Object.entries(columns).map(([status, items]) => (
               <div key={status} className="space-y-2">
                 <h3 className="text-lg font-semibold capitalize">{status.replace("_", " ")}</h3>
                 {items.map((task) => (
@@ -197,7 +229,7 @@ export default function RoomPage() {
                   </div>
                 ))}
               </div>
-            ))}
+            ))} */}
           </div>
         </CardContent>
       </Card>

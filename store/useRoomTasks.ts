@@ -2,12 +2,14 @@
 
 import { create } from "zustand";
 import { supabase } from "@/lib/supabase-client";
+import { Status } from "@/constants/status";
 
 type TodosState = {
   todos: any[];
 
   loadTodos: (roomId: string) => Promise<void>;
   createTodo: (roomId: string, title: string) => Promise<void>;
+  updateRoomTaskStatus: (taskId: string, status: Status, roomId: string) => Promise<void>;
 };
 
 export const useRoomTasksStore = create<TodosState>((set, get) => ({
@@ -38,4 +40,16 @@ export const useRoomTasksStore = create<TodosState>((set, get) => ({
       todos: data ? [data, ...state.todos] : state.todos,
     }));
   },
+
+  updateRoomTaskStatus: async (taskId: string, status: Status, roomId: string) => {
+    const { error } = await supabase
+      .from("room_todos")
+      .update({ status })
+      .eq("id", taskId);
+
+    if (error) return;
+
+    // перезагрузка списка
+    await get().loadTodos(roomId); 
+  }
 }));
