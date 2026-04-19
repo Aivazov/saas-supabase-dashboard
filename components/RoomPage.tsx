@@ -34,7 +34,8 @@ export default function RoomPage() {
     todos,
     loadTodos,
     createTodo,
-    updateRoomTaskStatus
+    updateRoomTaskStatus,
+    deleteRoomTask
   } = useRoomTasksStore();
 
   // const [room, setRoom] = useState<any>(null);
@@ -213,7 +214,14 @@ export default function RoomPage() {
                   key={task.id}
                   task={task}
                   onChangeStatus={handleChangeStatus}
+                  onDelete={(task) => deleteRoomTask(task.id, roomId)}
                 />
+                // <TaskComponent
+                //   key={task.id}
+                //   task={task}
+                //   onChangeStatus={handleChangeStatus}
+                //   onDeleteTask={(task) => deleteRoomTask(task.id, roomId)}
+                // />
               ))}
             </div>
             {/* {Object.entries(columns).map(([status, items]) => (

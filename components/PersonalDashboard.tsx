@@ -26,7 +26,8 @@ interface PersonalDashboardClientProps {
 // }
 
 const PersonalDashboardClient = ({userEmail}: PersonalDashboardClientProps) => {
-  const { tasks, fetchTasks, addTask, updateTaskStatus } = useTasks();
+  const { tasks, fetchTasks, addTask, updateTaskStatus, deleteTask } = useTasks();
+  // const { deleteTask } = useTasks();
 
   const [filter, setFilter] = useState<Status | 'all'>('all')
 
@@ -106,7 +107,14 @@ const PersonalDashboardClient = ({userEmail}: PersonalDashboardClientProps) => {
       {/* Tasks */}
       <div className="space-y-3">
         {filteredTasks.map(task => (
-          <TaskComponent key={task.id} task={task} onChangeStatus={handleChangeStatus} />
+          // <TaskComponent key={task.id} task={task} onChangeStatus={handleChangeStatus} />
+
+          <TaskComponent
+            key={task.id}
+            task={task}
+            onChangeStatus={handleChangeStatus}
+            onDelete={(task) => deleteTask(task.id)}
+          />
           // <div
           //   key={task.id}
           //   className="bg-gray-700 p-4 rounded-xl flex justify-between"

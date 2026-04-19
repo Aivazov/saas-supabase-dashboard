@@ -10,6 +10,7 @@ type TodosState = {
   loadTodos: (roomId: string) => Promise<void>;
   createTodo: (roomId: string, title: string) => Promise<void>;
   updateRoomTaskStatus: (taskId: string, status: Status, roomId: string) => Promise<void>;
+  deleteRoomTask: (taskId: string, roomId: string) => Promise<void>;
 };
 
 export const useRoomTasksStore = create<TodosState>((set, get) => ({
@@ -51,5 +52,19 @@ export const useRoomTasksStore = create<TodosState>((set, get) => ({
 
     // перезагрузка списка
     await get().loadTodos(roomId); 
+  },
+  
+  deleteRoomTask: async (taskId: string, roomId: string) => {
+    const { error } = await supabase
+      .from('room_todos')
+      .delete()
+      .eq('id', taskId);
+    
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    await get().loadTodos(roomId)
   }
 }));

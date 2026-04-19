@@ -4,11 +4,13 @@ import { useTasks } from '@/store/useTasks';
 import { Button } from '@headlessui/react';
 
 type Props = {
-  taskId: string;
+  onConfirm: () => Promise<void> | void;
+  // taskId: string;
 }
 
-const DeleteTaskBtn = ({taskId}: Props) => {
-  const { deleteTask } = useTasks();
+const DeleteTaskBtn = ({ onConfirm }: Props) => {
+// const DeleteTaskBtn = ({ taskId }: Props) => {
+  // const { deleteTask } = useTasks();
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -19,7 +21,8 @@ const DeleteTaskBtn = ({taskId}: Props) => {
   const onConfirmDelete = async () => {
     try {
       setLoading(true);
-      await deleteTask(taskId);
+      await onConfirm();
+      // await deleteTask(taskId);
       setIsOpen(false);
     } catch (e) {
       console.error('Delete failed:', e)
