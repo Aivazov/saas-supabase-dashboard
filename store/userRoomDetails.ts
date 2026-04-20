@@ -7,11 +7,12 @@ type RoomDetailsState = {
   room: any | null;
   members: any[];
 
-  loading: boolean;
+  loadingRoom: boolean;
+  loadingMembers: boolean;
   error: string | null;
 
-  loadRoom: (roomId: string) => Promise<void>;
-  loadMembers: (roomId: string) => Promise<void>;
+  fetchRoom: (roomId: string) => Promise<void>;
+  fetchMembers: (roomId: string) => Promise<void>;
   inviteMember: (roomId: string, email: string) => Promise<void>;
   deleteMember: (memberId: string, roomId: string) => Promise<void>;
 };
@@ -19,30 +20,33 @@ type RoomDetailsState = {
 export const useRoomDetailsStore = create<RoomDetailsState>((set, get) => ({
   room: null,
   members: [],
-  loading: false,
+  loadingRoom: false,
+  loadingMembers: true,
   error: null,
 
-  loadRoom: async (roomId) => {
+  fetchRoom: async (roomId) => {
+    set({ loadingRoom: true, error: null });
     const { data, error } = await supabase
       .from("rooms")
       .select("*")
       .eq("id", roomId)
       .maybeSingle();
 
-    if (error) return set({ error: error.message });
+    if (error) return set({ error: error.message, loadingRoom: false });
 
-    set({ room: data });
+    set({ room: data, loadingRoom: false });
   },
 
-  loadMembers: async (roomId) => {
+  fetchMembers: async (roomId) => {
+    set({ loadingMembers: true, error: null });
     const { data, error } = await supabase
       .from("room_members")
       .select("id, role, profiles(email, nickname)")
       .eq("room_id", roomId);
 
-    if (error) return set({ error: error.message });
+    if (error) return set({ error: error.message, loadingMembers: false });
 
-    set({ members: data || [] });
+    set({ members: data || [], loadingMembers: false });
   },
 
   inviteMember: async (roomId, email) => {
@@ -65,7 +69,7 @@ export const useRoomDetailsStore = create<RoomDetailsState>((set, get) => ({
 
     if (error) return set({ error: error.message });
 
-    await get().loadMembers(roomId);
+    await get().fetchMembers(roomId);
   },
   
   deleteMember: async (memberId, roomId) => {
@@ -95,6 +99,6 @@ export const useRoomDetailsStore = create<RoomDetailsState>((set, get) => ({
     
   //   if (error) return set({ error: error.message })
     
-  //   await get().loadMembers(roomId)
+  //   await get().fetchMembers(roomId)
   // }
 }));

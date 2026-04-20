@@ -29,7 +29,7 @@ export default function DashboardClient({ userEmail }: DashboardClientProps) {
   const [roomName, setRoomName] = useState("");
   // const [taskTitle, setTaskTitle] = useState("");
 
-  const { rooms, fetchRooms, addRoom } = useRoomsStore();
+  const { rooms, fetchRooms, createRoom } = useRoomsStore();
 
   useEffect(() => {
     fetchRooms();
@@ -70,7 +70,7 @@ export default function DashboardClient({ userEmail }: DashboardClientProps) {
   //   }
   // }, [currentRoomId]);
 
-  // async function createRoom() {
+  // async function handleCreateRoom() {
   //   if (!roomName) return;
 
   //   const { data, error } = await supabase
@@ -88,7 +88,7 @@ export default function DashboardClient({ userEmail }: DashboardClientProps) {
   //     setRoomName("");
   //   }
   // }
-  async function createRoom() {
+  async function handleCreateRoom() {
     if (!roomName) return;
 
     const { data: { user } } = await supabase.auth.getUser();
@@ -111,7 +111,7 @@ export default function DashboardClient({ userEmail }: DashboardClientProps) {
       });
 
       // setRooms((prev) => [...prev, room]);
-      addRoom(room);
+      createRoom(room);
       setCurrentRoomId(room.id);
       setRoomName("");
     }
@@ -160,7 +160,7 @@ export default function DashboardClient({ userEmail }: DashboardClientProps) {
               value={roomName}
               onChange={(e) => setRoomName(e.target.value)}
             />
-            <Button onClick={createRoom}>Create</Button>
+            <Button onClick={handleCreateRoom}>Create</Button>
           </div>
 
           <div className="flex flex-wrap gap-2">

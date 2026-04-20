@@ -12,7 +12,7 @@ export type Room = {
 type RoomsState = {
   rooms: Room[];
   fetchRooms: () => Promise<void>;
-  addRoom: (room: Room) => void;
+  createRoom: (room: Room) => void;
   renameRoom: (roomId: string, newName: string) => Promise<void>;
   deleteRoom: (roomId: string) => Promise<void>;
 };
@@ -26,7 +26,7 @@ export const useRoomsStore = create<RoomsState>((set, get) => ({
     set({ rooms: data || [] });
   },
 
-  addRoom: async (room) => {
+  createRoom: async (room) => {
     set((state) => ({
       rooms: [...state.rooms, room],
     }))

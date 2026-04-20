@@ -4,23 +4,17 @@ import StatusBadge from '../StatusBadge';
 import DeleteTaskBtn from '../DeleteTaskBtn';
 import { Status } from '@/constants/status';
 
-// type Props = {
-//   task: Task;
-//   onChangeStatus: (status: Status, task: Task) => void
-//   onDeleteTask: (task: Task, roomId: ) => void
-// }
-
-type Props = {
+type TaskComponentProps = {
   task: Task;
   onChangeStatus: (status: Status, task: Task) => void;
   onDelete?: (task: Task) => void;
 }
 
-const TaskComponent = ({task, onChangeStatus, onDelete}: Props) => {
+const TaskComponent = ({task, onChangeStatus, onDelete}: TaskComponentProps) => {
   return (
     <div
       key={task.id}
-      className="bg-gray-700 p-4 rounded-xl flex justify-between"
+      className="bg-gray-700 p-4 rounded-xl flex justify-between w-full"
     >
       <div>
         <p>{task.title}</p>
@@ -38,7 +32,6 @@ const TaskComponent = ({task, onChangeStatus, onDelete}: Props) => {
         {onDelete && (
           <DeleteTaskBtn onConfirm={() => onDelete(task)} />
         )}
-        {/* <DeleteTaskBtn taskId={task.id} /> */}
       </div>
     </div>
   )

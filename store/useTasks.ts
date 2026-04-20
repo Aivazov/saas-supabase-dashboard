@@ -13,28 +13,44 @@ type Task = {
   user_id: string;
 };
 
-type Store = {
+type TasksState = {
   tasks: Task[];
+
   setTasks: (task: Task[]) => void;
-  fetchTasks: () => Promise<void>;
-  addTask: (title: string) => Promise<void>;
+
+  loadingTasks: boolean;
+  refreshingTasks: boolean;
+  fetchTasks: (options?: { silent?: boolean }) => Promise<void>;
+
+  createTask: (title: string) => Promise<void>;
   updateTaskStatus: (id: string, status: Task["status"]) => Promise<void>;
   deleteTask: (id: string) => Promise<void>;
 };
 
-export const useTasks = create<Store>((set, get) => ({
+export const useTasks = create<TasksState>((set, get) => ({
   tasks: [],
 
   setTasks: (tasks) => set({ tasks }),
 
-  fetchTasks: async () => {
+  loadingTasks: true,
+  refreshingTasks: false,
+
+  fetchTasks: async (options) => {
+    //separating modes for skeleton correct appearing
+    if (!options?.silent) {
+      set({ loadingTasks: true });
+    } else {
+      set({ refreshingTasks: true });
+    }
+
+    // set({ loadingTasks: true });
     const {
       data: { user },
       error: userError,
     } = await supabase.auth.getUser();
 
     if (userError || !user) {
-      set({ tasks: [] });
+      set({ tasks: [], loadingTasks: false });
       return;
     }
 
@@ -44,11 +60,18 @@ export const useTasks = create<Store>((set, get) => ({
       .eq("user_id", user.id)
       .order("created_at", { ascending: false });
 
-    if (!error) set({ tasks: data || [] });
-    else console.error(error);
+    // if (!error) set({ tasks: data || [], loadingTasks: false });
+    // else console.error(error);
+  
+    if (!error) {
+      set({ tasks: data || [], loadingTasks: false, refreshingTasks: false });
+    } else {
+      console.error(error);
+      set({ loadingTasks: false, refreshingTasks: false });
+    }
   },
 
-  addTask: async (title) => {
+  createTask: async (title) => {
     const {
       data: { user },
       error: userError,
@@ -71,16 +94,19 @@ export const useTasks = create<Store>((set, get) => ({
       return;
     }
 
-    await get().fetchTasks();
+    // await get().fetchTasks();
+    await get().fetchTasks({ silent: true });
   },
 
   updateTaskStatus: async (id, status) => {
     await supabase.from("tasks").update({ status }).eq("id", id);
-    get().fetchTasks();
+    // get().fetchTasks();
+    await get().fetchTasks({ silent: true });
   },
 
   deleteTask: async (id) => {
     await supabase.from("tasks").delete().eq("id", id);
-    get().fetchTasks();
+    // get().fetchTasks();
+    await get().fetchTasks({ silent: true });
   },
 }));

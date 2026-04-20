@@ -3,31 +3,26 @@
 'use client';
 import { useEffect, useMemo, useState } from "react";
 import { useTasks } from "@/store/useTasks"
-import { useGenerateTasks } from '@/hooks/useGenerateTasks'
-// import StatusBadge from "@/components/StatusBadge";
-// import TodoListbox from "@/components/TodoListbox";
-// import { Status, Task } from "@/types/components";
 import { Status, FilterValue } from "@/constants/status"
-// import MyModal from "./MyModal";
-import DeleteTaskBtn from "./DeleteTaskBtn";
-import { StatusFilter } from "@/services/StatusFilter";
-import { StatusSelector } from "@/services/StatusSelector";
 import { Task } from "@/constants/task";
+import { useGenerateTasks } from '@/hooks/useGenerateTasks'
+import { StatusFilter } from "@/services/StatusFilter";
 import TaskComponent from "./Task/TaskComponent";
+import { Skeleton } from "./ui/skeleton";
 
 interface PersonalDashboardClientProps {
   userEmail?: string | null;
 }
 
-// interface Task {
-//   id: string;
-//   title: string;
-//   status: Status;
-// }
-
 const PersonalDashboardClient = ({userEmail}: PersonalDashboardClientProps) => {
-  const { tasks, fetchTasks, addTask, updateTaskStatus, deleteTask } = useTasks();
-  // const { deleteTask } = useTasks();
+  const {
+    tasks,
+    loadingTasks,
+    fetchTasks,
+    createTask,
+    updateTaskStatus,
+    deleteTask
+  } = useTasks();
 
   const [filter, setFilter] = useState<Status | 'all'>('all')
 
@@ -40,7 +35,7 @@ const PersonalDashboardClient = ({userEmail}: PersonalDashboardClientProps) => {
 
   const handleAdd = async () => {
     if (!newTask) return
-    await addTask(newTask)
+    await createTask(newTask)
     setNewTask('')
   }
 
@@ -106,36 +101,26 @@ const PersonalDashboardClient = ({userEmail}: PersonalDashboardClientProps) => {
 
       {/* Tasks */}
       <div className="space-y-3">
-        {filteredTasks.map(task => (
-          // <TaskComponent key={task.id} task={task} onChangeStatus={handleChangeStatus} />
+        {loadingTasks ? (
+          <>
+            {[...Array(3)].map((_, i) => (
+              <li key={i} className="flex flex-col w-full justify-between px-4 py-2">
+                <Skeleton className="h-18 w-full" />
+                {/* <Skeleton className="h-4 w-32" /> */}
+              </li>
+            ))}
+          </>
+        ) : (
+          filteredTasks.map(task => (
 
-          <TaskComponent
-            key={task.id}
-            task={task}
-            onChangeStatus={handleChangeStatus}
-            onDelete={(task) => deleteTask(task.id)}
-          />
-          // <div
-          //   key={task.id}
-          //   className="bg-gray-700 p-4 rounded-xl flex justify-between"
-          // >
-          //   <div>
-          //     <p>{task.title}</p>
-          //     <StatusBadge status={task.status} />
-          //   </div>
-
-          //   {/* STATUS SELECTOR */}
-          //   <div className="flex gap-2">
-              
-          //     <StatusSelector 
-          //       value={task.status}
-          //       onChange={(e) => handleChangeStatus(e, task)}
-          //     />
-
-          //     <DeleteTaskBtn taskId={task.id} />
-          //   </div>
-          // </div>
-        ))}
+            <TaskComponent
+              key={task.id}
+              task={task}
+              onChangeStatus={handleChangeStatus}
+              onDelete={(task) => deleteTask(task.id)}
+            />
+          ))
+        )}
       </div>
     </div>
   )

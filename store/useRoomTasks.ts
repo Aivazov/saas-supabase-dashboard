@@ -4,29 +4,50 @@ import { create } from "zustand";
 import { supabase } from "@/lib/supabase-client";
 import { Status } from "@/constants/status";
 
-type TodosState = {
-  todos: any[];
+type RoomTasksState = {
+  roomTasks: any[];
 
-  loadTodos: (roomId: string) => Promise<void>;
-  createTodo: (roomId: string, title: string) => Promise<void>;
+  loadingRoomTasks: boolean;
+  refreshingRoomTasks: boolean;
+  fetchRoomTasks: (roomId: string, options?: {silent?: boolean}) => Promise<void>;
+
+  createRoomTask: (roomId: string, title: string) => Promise<void>;
   updateRoomTaskStatus: (taskId: string, status: Status, roomId: string) => Promise<void>;
   deleteRoomTask: (taskId: string, roomId: string) => Promise<void>;
 };
 
-export const useRoomTasksStore = create<TodosState>((set, get) => ({
-  todos: [],
+export const useRoomTasksStore = create<RoomTasksState>((set, get) => ({
+  roomTasks: [],
 
-  loadTodos: async (roomId) => {
-    const { data } = await supabase
+  loadingRoomTasks: true,
+  refreshingRoomTasks: false,
+  
+  fetchRoomTasks: async (roomId, options) => {
+    if (!options?.silent) {
+      set({ loadingRoomTasks: true });
+    } else {
+      set({ refreshingRoomTasks: true });
+    }
+    
+    const { data, error } = await supabase
       .from("room_todos")
       .select("*")
       .eq("room_id", roomId)
       .order("created_at", { ascending: false });
+    
+    if (error) {
+      console.log('error UseRoomTasks', error.message);
+      
+      set({ loadingRoomTasks: false, refreshingRoomTasks: false });
+      return;
+    }
 
-    set({ todos: data || [] });
+    // set({ roomTasks: data || [], loadingRoomTasks: false });
+    set({ roomTasks: data || [], loadingRoomTasks: false, refreshingRoomTasks: false });
+  
   },
 
-  createTodo: async (roomId, title) => {
+  createRoomTask: async (roomId, title) => {
     if (!title) return;
 
     const { data, error } = await supabase
@@ -38,8 +59,9 @@ export const useRoomTasksStore = create<TodosState>((set, get) => ({
     if (error) return;
 
     set((state) => ({
-      todos: data ? [data, ...state.todos] : state.todos,
+      roomTasks: data ? [data, ...state.roomTasks] : state.roomTasks,
     }));
+    await get().fetchRoomTasks(roomId, { silent: true });
   },
 
   updateRoomTaskStatus: async (taskId: string, status: Status, roomId: string) => {
@@ -51,7 +73,8 @@ export const useRoomTasksStore = create<TodosState>((set, get) => ({
     if (error) return;
 
     // перезагрузка списка
-    await get().loadTodos(roomId); 
+    // await get().fetchRoomTasks(roomId); 
+    await get().fetchRoomTasks(roomId, { silent: true });
   },
   
   deleteRoomTask: async (taskId: string, roomId: string) => {
@@ -65,6 +88,7 @@ export const useRoomTasksStore = create<TodosState>((set, get) => ({
       return;
     }
 
-    await get().loadTodos(roomId)
+    // await get().fetchRoomTasks(roomId)
+    await get().fetchRoomTasks(roomId, { silent: true });
   }
 }));
