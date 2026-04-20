@@ -15,7 +15,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
       {/* Sidebar */}
       <SidebarLayout />
 
-      <main className="flex-1 p-6 overflow-y-auto">
+      <main className="flex-1 p-6 overflow-y-auto bg-[#09090b]">
         {children}
       </main>
     </div>
