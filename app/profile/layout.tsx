@@ -1,13 +1,13 @@
-// app/personal-dashboard/layout.tsx
+// app/settings/layout.tsx
 
 import SidebarClient from '@/components/SidebarClient';
 import React from 'react'
 
-type PersonalDashboardLayoutProps = {
+type ProfileLayoutProps = {
   children: React.ReactNode;
 }
 
-const PersonalDashboardLayout = ({ children }: PersonalDashboardLayoutProps) => {
+const ProfileLayout = ({ children }: ProfileLayoutProps) => {
   
 
   return (
@@ -15,7 +15,6 @@ const PersonalDashboardLayout = ({ children }: PersonalDashboardLayoutProps) => 
       {/* Sidebar */}
       <SidebarClient />
 
-      {/* Main */}
       <main className="flex-1 p-6 overflow-y-auto bg-[#09090b]">
         {children}
       </main>
@@ -23,4 +22,4 @@ const PersonalDashboardLayout = ({ children }: PersonalDashboardLayoutProps) => 
   )
 }
 
-export default PersonalDashboardLayout
+export default ProfileLayout

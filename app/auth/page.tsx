@@ -2,7 +2,7 @@
 
 import { redirect } from 'next/navigation'
 import { getServerUser } from '@/lib/supabase-server'
-import AuthPage from '@/components/AuthPage'
+import AuthPageComponent from '@/features/auth/components/AuthPage'
 
 export default async function Page() {
   const user = await getServerUser()
@@ -11,5 +11,5 @@ export default async function Page() {
     redirect('/dashboard')
   }
 
-  return <AuthPage />
+  return <AuthPageComponent />
 }

@@ -5,12 +5,13 @@ import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { supabase } from "@/lib/supabase-client";
-import Link from "next/link";
-import RoomActions from "./RoomActions";
+// import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+// import { supabase } from "@/lib/supabase-client";
+// import Link from "next/link";
+// import RoomCardDropdown from "./RoomCardDropdown";
 import { useRoomsStore } from "@/store/useRooms";
-import { BiPlusCircle, BiLayer, BiChevronRight, BiHash } from "react-icons/bi";
+import { BiPlusCircle, BiLayer, BiHash } from "react-icons/bi";
+import RoomCard from "./RoomCard";
 
 interface DashboardClientProps {
   userEmail?: string | null;
@@ -115,7 +116,7 @@ export default function DashboardClient({ userEmail }: DashboardClientProps) {
     //               {room.name}
     //             </Link>
 
-    //             <RoomActions roomId={room.id} currentName={room.name} />
+    //             <RoomCardDropdown roomId={room.id} currentName={room.name} />
 
     //           </div>
     //         ))}
@@ -124,7 +125,6 @@ export default function DashboardClient({ userEmail }: DashboardClientProps) {
     //   </Card>
     // </div>
 
-    
     <div className="min-h-screen bg-[#09090b] text-zinc-100 p-6 md:p-10">
       <div className="max-w-6xl mx-auto space-y-10">
         
@@ -176,28 +176,29 @@ export default function DashboardClient({ userEmail }: DashboardClientProps) {
           ) : (
             //Rooms List 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {rooms.map((room) => (
-                <div 
-                  key={room.id}
-                  className="group relative bg-zinc-900/40 border border-zinc-800 hover:border-cyan-500/50 rounded-2xl p-5 transition-all duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:-translate-y-1"
-                >
-                  <div className="flex justify-between items-start mb-10">
-                    <div className="bg-cyan-500/10 p-3 rounded-xl group-hover:bg-cyan-500/20 transition-colors">
-                      <BiHash className="w-6 h-6 text-cyan-500" />
-                    </div>
-                    <RoomActions roomId={room.id} currentName={room.name} />
-                  </div>
+                {rooms.map((room) => (
+                  // <div
+                  //   key={room.id}
+                  //   className="group relative bg-zinc-900/40 border border-zinc-800 hover:border-cyan-500/50 rounded-2xl p-5 transition-all duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:-translate-y-1"
+                  // >
+                  //   <div className="flex justify-between items-start mb-10">
+                  //     <div className="bg-cyan-500/10 p-3 rounded-xl group-hover:bg-cyan-500/20 transition-colors">
+                  //       <BiHash className="w-6 h-6 text-cyan-500" />
+                  //     </div>
+                  //     <RoomCardDropdown roomId={room.id} currentName={room.name} />
+                  //   </div>
 
-                  <Link href={`/dashboard/${room.id}`} className="block">
-                    <h3 className="text-lg font-semibold group-hover:text-cyan-400 transition-colors truncate">
-                      {room.name}
-                    </h3>
-                    <div className="flex items-center mt-2 text-zinc-500 text-sm group-hover:text-zinc-300">
-                      View details
-                      <BiChevronRight className="ml-1 w-4 h-4" />
-                    </div>
-                  </Link>
-                </div>
+                  //   <Link href={`/dashboard/${room.id}`} className="block">
+                  //     <h3 className="text-lg font-semibold group-hover:text-cyan-400 transition-colors truncate">
+                  //       {room.name}
+                  //     </h3>
+                  //     <div className="flex items-center mt-2 text-zinc-500 text-sm group-hover:text-zinc-300">
+                  //       View details
+                  //       <BiChevronRight className="ml-1 w-4 h-4" />
+                  //     </div>
+                  //   </Link>
+                  // </div>
+                  <RoomCard key={room.id} room={room} />
               ))}
             </div>
           )}

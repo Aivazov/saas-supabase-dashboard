@@ -216,10 +216,11 @@ export default function RoomPageClient() {
                     placeholder="What needs to be done?"
                     value={taskTitle}
                     onChange={(e) => setTaskTitle(e.target.value)}
-                    className="bg-zinc-800/50 border-zinc-700 focus:ring-cyan-500"
+                    className="bg-zinc-800/50 border-zinc-700 focus:ring-cyan-500 text-zinc-300"
                   />
                   <Button 
                     onClick={handleCreateRoomTask} 
+                    disabled={loadingRoomTasks || !taskTitle}
                     className="bg-cyan-600 hover:bg-cyan-500 text-white"
                   >
                     <BiPlus className="w-5 h-5" />
@@ -265,7 +266,7 @@ export default function RoomPageClient() {
                     placeholder="Email address..."
                     value={inviteEmail}
                     onChange={(e) => setInviteEmail(e.target.value)}
-                    className="bg-zinc-800/50 border-zinc-700 text-sm"
+                    className="bg-zinc-800/50 border-zinc-700 text-sm text-zinc-300"
                   />
                   <Button 
                     onClick={handleInvite} 

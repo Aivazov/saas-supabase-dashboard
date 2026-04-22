@@ -1,6 +1,6 @@
 // app/dashboard/layout.tsx
 
-import SidebarLayout from '@/components/SidebarLayout';
+import SidebarClient from '@/components/SidebarClient';
 import React from 'react'
 
 type DashboardLayoutProps = {
@@ -13,7 +13,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   return (
     <div className="flex h-screen bg-gray-900">
       {/* Sidebar */}
-      <SidebarLayout />
+      <SidebarClient />
 
       <main className="flex-1 p-6 overflow-y-auto bg-[#09090b]">
         {children}

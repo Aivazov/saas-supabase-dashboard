@@ -1,4 +1,4 @@
-// components/RoomActions.tsx
+// components/RoomCardDropdown.tsx
 "use client";
 
 import { useState } from "react";
@@ -28,12 +28,12 @@ import { Button } from "./ui/button";
 import ModalCancelBtn from "./Modal/ModalCancelBtn";
 
 
-type RoomActionsProps = {
+type RoomCardDropdownProps = {
   roomId: string;
   currentName: string;
 };
 
-export default function RoomActions({ roomId, currentName }: RoomActionsProps) {
+export default function RoomCardDropdown({ roomId, currentName }: RoomCardDropdownProps) {
   const { renameRoom, deleteRoom } = useRoomsStore ();
   // const router = useRouter();
 

@@ -1,10 +1,10 @@
 // app/settings/page.tsx
 
-import SettingsClient from "@/components/SettingsClient";
-import { getServerUser, getServerProfile, getServerSupabase } from "@/lib/supabase-server";
+import ProfilePageClient from "@/components/ProfilePageClient";
+import { getServerUser, getServerProfile } from "@/lib/supabase-server";
 import { redirect } from "next/navigation";
 
-export default async function Settings() {
+export default async function ProfilePage() {
   const user = await getServerUser();
 
   if (!user) {
@@ -14,7 +14,7 @@ export default async function Settings() {
   const profile = await getServerProfile(user.id);
 
   return (
-    <SettingsClient
+    <ProfilePageClient
       userEmail={user.email}
       nickname={profile?.nickname ?? null}
     />

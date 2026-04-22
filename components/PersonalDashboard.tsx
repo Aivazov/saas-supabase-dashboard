@@ -11,10 +11,11 @@ import TaskComponent from "./Task/TaskComponent";
 import { Skeleton } from "./ui/skeleton";
 import { BiFilterAlt, BiPlus, BiUserCircle, BiTask, BiStar } from "react-icons/bi";
 import { IoSparkles } from "react-icons/io5";
-import { Button } from "@headlessui/react";
+// import { Button } from "@headlessui/react";
 import { Card, CardContent } from "./ui/card";
 import { Input } from "./ui/input";
 import { Badge } from "./ui/badge";
+import { Button } from "./ui/button";
 
 interface PersonalDashboardClientProps {
   userEmail?: string | null;
@@ -57,6 +58,8 @@ const PersonalDashboardClient = ({userEmail}: PersonalDashboardClientProps) => {
   const handleFilterChange = (value: Status | FilterValue) => {
     setFilter(value)
   }
+  console.log('newTask PersonalDashboard: ', newTask);
+  
 
   return (
     // <div className="max-w-4xl mx-auto text-white">
@@ -148,7 +151,7 @@ const PersonalDashboardClient = ({userEmail}: PersonalDashboardClientProps) => {
           <Button
             onClick={generateTasks}
             disabled={aiLoading}
-            className="relative overflow-hidden group bg-zinc-900 border border-zinc-800 hover:border-cyan-500/50 transition-all px-6"
+            className="relative overflow-hidden group bg-zinc-900 rounded-md border border-zinc-800 hover:border-cyan-500/50 transition-all px-6 py-2 cursor-pointer"
           >
             <span className="relative z-10 flex items-center gap-2">
               {aiLoading ? (
@@ -178,9 +181,10 @@ const PersonalDashboardClient = ({userEmail}: PersonalDashboardClientProps) => {
                 </div>
                 <Button 
                   onClick={handleAdd}
-                  className="w-full md:w-auto bg-cyan-600 hover:bg-cyan-500 text-white h-12 px-8"
+                  disabled={loadingTasks || !newTask}
+                  className="w-full md:w-auto rounded-md bg-cyan-600 hover:bg-cyan-500 text-white h-12 px-8 flex items-center justify-center gap-1 cursor-pointer"
                 >
-                  <BiPlus className="text-xl mr-1" /> Add Task
+                  <BiPlus className="text-xl mr-1" /> <span>Add Task</span>
                 </Button>
               </div>
 

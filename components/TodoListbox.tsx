@@ -87,8 +87,8 @@ export default function TodoListbox<T extends string>({ value, onChange, options
     <Listbox value={selectedOption} onChange={handleChange}>
       {({ open }) => (
         <>
-          <div className="relative mt-1 min-w-[80px]">
-            <Listbox.Button
+          <div className="relative mt-1 min-w-[100px]">
+            {/* <Listbox.Button
               ref={buttonRef}
               onClick={updatePosition}
               className="relative w-full rounded-lg bg-gray-500 py-2 pl-3 pr-10 text-left shadow-md sm:text-sm cursor-pointer"
@@ -96,6 +96,17 @@ export default function TodoListbox<T extends string>({ value, onChange, options
               <span className="block truncate">{selectedOption.name}</span>
               <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                 <ChevronUpDownIcon className="h-5 w-5 text-gray-200" />
+              </span>
+            </Listbox.Button> */}
+
+            <Listbox.Button
+              ref={buttonRef}
+              onClick={updatePosition}
+              className="relative w-full rounded-xl bg-zinc-800/50 border border-zinc-700 py-2 pl-3 pr-8 text-left text-xs font-medium text-zinc-300 hover:bg-zinc-800 hover:text-white transition-all cursor-pointer"
+            >
+              <span className="block truncate">{selectedOption.name}</span>
+              <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                <ChevronUpDownIcon className="h-4 w-4 text-zinc-500" />
               </span>
             </Listbox.Button>
           </div>
@@ -114,7 +125,7 @@ export default function TodoListbox<T extends string>({ value, onChange, options
               leaveFrom="opacity-100 scale-100 translate-y-0"
               leaveTo="opacity-0 scale-95 -translate-y-1"
             >
-              <Listbox.Options
+              {/* <Listbox.Options
                 style={{
                   position: 'fixed',
                   top: position.top,
@@ -146,6 +157,34 @@ export default function TodoListbox<T extends string>({ value, onChange, options
                             <CheckIcon className="h-5 w-5" />
                           </span>
                         )}
+                      </>
+                    )}
+                  </Listbox.Option>
+                ))}
+              </Listbox.Options> */}
+
+              <Listbox.Options
+                style={{ top: position.top, left: position.left, width: position.width }}
+                className="fixed mt-1 max-h-60 overflow-auto rounded-xl bg-zinc-900 border border-zinc-800 py-1 text-sm shadow-2xl z-[9999] backdrop-blur-xl"
+              >
+                {options.map((option, idx) => (
+                  <Listbox.Option
+                    key={idx}
+                    value={option}
+                    className={({ active, selected }) => `
+                      relative cursor-pointer select-none py-2 pl-9 pr-4 transition-colors
+                      ${active ? 'bg-zinc-800 text-cyan-400' : 'text-zinc-400'}
+                      ${selected ? 'text-cyan-400 font-semibold' : ''}
+                    `}
+                  >
+                    {({ selected }) => (
+                      <>
+                        {selected && (
+                          <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-cyan-500">
+                            <CheckIcon className="h-4 w-4" />
+                          </span>
+                        )}
+                        <span className="block truncate">{option.name}</span>
                       </>
                     )}
                   </Listbox.Option>

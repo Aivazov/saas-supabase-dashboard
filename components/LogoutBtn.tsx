@@ -33,7 +33,8 @@ const LogoutBtn = () => {
       <button
         onClick={openModal}
         type='button'
-        className="px-5 py-2 bg-red-600 hover:bg-red-700 rounded text-sm font-medium transition flex items-center gap-2 cursor-pointer"
+        // className="px-5 py-2 bg-red-600 hover:bg-red-700 rounded text-sm font-medium transition flex items-center gap-2 cursor-pointer"
+        className="w-full justify-start text-zinc-400 hover:text-red-400 cursor-pointer"
       >
         Logout
       </button>
