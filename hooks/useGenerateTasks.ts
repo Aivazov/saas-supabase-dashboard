@@ -4,7 +4,7 @@ import { useTasks } from "@/store/useTasks";
 import { useState } from "react";
 
 export function useGenerateTasks() {
-  const { addTask } = useTasks();
+  const { createTask } = useTasks();
   const [loading, setLoading] = useState(false);
 
   const generateTasks = async () => {
@@ -24,11 +24,11 @@ export function useGenerateTasks() {
       
       if (data.tasks && Array.isArray(data.tasks)) {
         // ⚠️ важно: не await в цикле (медленно)
-        await Promise.all(data.tasks.map((t: string) => addTask(t)))
+        await Promise.all(data.tasks.map((t: string) => createTask(t)))
       }
       // if (data.tasks && Array.isArray(data.tasks)) {
       //   for (const t of data.tasks) {
-      //     await addTask(t);
+      //     await createTask(t);
       //   }
       // }
     } catch (error) {

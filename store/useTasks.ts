@@ -1,17 +1,27 @@
 // store/useTasks.ts
 import { Status } from "@/constants/status";
+import { Task } from "@/constants/task";
 import { supabase } from "@/lib/supabase-client";
 // import { Status } from "@/types/components";
 import { create } from "zustand";
 
-type Task = {
-  id: string;
-  title: string;
-  status: Status;
-  created_at: string;
-  updated_at: string;
-  user_id: string;
-};
+// type Task = {
+//   id: string;
+//   title: string;
+//   status: Status | null;
+//   created_at: string | null;
+//   updated_at?: string | null;
+//   user_id: string | null;
+// };
+
+// type Task = {
+//   id: string;
+//   title: string;
+//   status: Status;
+//   created_at: string;
+//   updated_at: string;
+//   user_id: string;
+// };
 
 type TasksState = {
   tasks: Task[];
@@ -50,7 +60,7 @@ export const useTasks = create<TasksState>((set, get) => ({
     } = await supabase.auth.getUser();
 
     if (userError || !user) {
-      set({ tasks: [], loadingTasks: false });
+      set({ tasks: [], loadingTasks: false, refreshingTasks: false });
       return;
     }
 
@@ -60,15 +70,41 @@ export const useTasks = create<TasksState>((set, get) => ({
       .eq("user_id", user.id)
       .order("created_at", { ascending: false });
 
+    
+    if (error) {
+      console.error(error);
+      set({ loadingTasks: false, refreshingTasks: false });
+      return;
+    }
+
+    // Вот тут магия: превращаем string | null в Status
+    const sanitizedTasks: Task[] = (data || []).map(t => ({
+      ...t,
+      status: (t.status as Status) || 'todo' 
+    }));
+
+    set({ 
+      tasks: sanitizedTasks, 
+      loadingTasks: false, 
+      refreshingTasks: false 
+    });
+    // if (data) {
+    //   const sanitizedTasks: Task[] = data.map(t => ({
+    //     ...t,
+    //     // Если статус из базы null или невалидный, ставим 'todo' по дефолту
+    //     status: (t.status as Status) || 'todo' 
+    //   }));
+    //   set({ tasks: sanitizedTasks, loadingTasks: false });
+    // }
     // if (!error) set({ tasks: data || [], loadingTasks: false });
     // else console.error(error);
   
-    if (!error) {
-      set({ tasks: data || [], loadingTasks: false, refreshingTasks: false });
-    } else {
-      console.error(error);
-      set({ loadingTasks: false, refreshingTasks: false });
-    }
+    // if (!error) {
+    //   set({ tasks: data || [], loadingTasks: false, refreshingTasks: false });
+    // } else {
+    //   console.error(error);
+    //   set({ loadingTasks: false, refreshingTasks: false });
+    // }
   },
 
   createTask: async (title) => {
