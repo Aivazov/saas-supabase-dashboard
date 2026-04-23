@@ -1,22 +1,25 @@
 // features/personal-dashboard/components/PersonalDashboardClient.tsx
 
 'use client';
-import { useEffect, useMemo, useState } from "react";
-import { useTasks } from "@/store/useTasks"
-import { Status, FilterValue } from "@/constants/status"
-import { Task } from "@/constants/task";
-import { useGenerateTasks } from '@/hooks/useGenerateTasks'
-import { StatusFilter } from "@/features/tasks/components/StatusFilter";
-import TaskComponent from "../../tasks/components/TaskComponent";
-import { Skeleton } from "../../../components/ui/skeleton";
-import { BiFilterAlt, BiPlus, BiUserCircle, BiTask, BiStar } from "react-icons/bi";
-import { IoSparkles } from "react-icons/io5";
+// import { useEffect, useMemo, useState } from "react";
+// import { useTasks } from "@/store/useTasks"
+// import { Status, FilterValue } from "@/constants/status"
+// import { Task } from "@/constants/task";
+// import { useGenerateTasks } from '@/hooks/useGenerateTasks'
+// import { StatusFilter } from "@/features/tasks/components/StatusFilter";
+// import TaskComponent from "../../tasks/components/TaskComponent";
+// import { Skeleton } from "../../../components/ui/skeleton";
+// import { BiFilterAlt, BiPlus, BiUserCircle, BiTask, BiStar } from "react-icons/bi";
+// import { IoSparkles } from "react-icons/io5";
 // import { Button } from "@headlessui/react";
-import { Card, CardContent } from "../../../components/ui/card";
-import { Input } from "../../../components/ui/input";
-import { Badge } from "../../../components/ui/badge";
-import { Button } from "../../../components/ui/button";
+// import { Card, CardContent } from "../../../components/ui/card";
+// import { Input } from "../../../components/ui/input";
+// import { Badge } from "../../../components/ui/badge";
+// import { Button } from "../../../components/ui/button";
 import { usePersonalDashboard } from "../hooks/use-personal-dashboard";
+import PersonalDashboardHeader from "./PersonalDashboardHeader";
+import TaskInputForm from "./TaskInputForm";
+import TaskList from "./TaskList";
 
 interface PersonalDashboardClientProps {
   userEmail?: string | null;
@@ -80,7 +83,7 @@ const PersonalDashboardClient = ({userEmail}: PersonalDashboardClientProps) => {
       <div className="max-w-4xl mx-auto space-y-8">
         
         {/* Header Section */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        {/* <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2">
             <h1 className="text-4xl font-extrabold tracking-tight bg-gradient-to-r from-white to-zinc-500 bg-clip-text text-transparent">
               My Tasks
@@ -105,32 +108,20 @@ const PersonalDashboardClient = ({userEmail}: PersonalDashboardClientProps) => {
               {aiLoading ? 'Magic in progress...' : 'AI Generate'}
             </span>
 
-            {/* Glowing effect on hover */}
             <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
           </Button>
-        </div>
+        </div> */}
+
+        <PersonalDashboardHeader
+          userEmail={userEmail}
+          generateTasks={generateTasks}
+          aiLoading={aiLoading}
+        />
 
         {/* Input & Filter Bar */}
-        <div className="grid grid-cols-1 gap-4">
+        {/* <div className="grid grid-cols-1 gap-4">
           <Card className="bg-zinc-900/40 border-zinc-800 backdrop-blur-md">
             <CardContent className="p-4">
-              {/* <div className="flex flex-col md:flex-row gap-4 items-center">
-                <div className="relative flex-1 w-full">
-                  <Input
-                    className="bg-zinc-950/50 border-zinc-800 focus:ring-cyan-500/20 pl-4 h-12 text-zinc-200"
-                    value={newTask}
-                    onChange={(e) => setNewTask(e.target.value)}
-                    placeholder="Capture a new thought or task..."
-                  />
-                </div>
-                <Button 
-                  onClick={handleAdd}
-                  disabled={loadingTasks || !newTask}
-                  className="w-full md:w-auto rounded-md bg-cyan-600 hover:bg-cyan-500 text-white h-12 px-8 flex items-center justify-center gap-1 cursor-pointer"
-                >
-                  <BiPlus className="text-xl mr-1" /> <span>Add Task</span>
-                </Button>
-              </div> */}
 
               <form onSubmit={form.handleSubmit(handleAddTask)} className="flex flex-col md:flex-row gap-4 items-center text-zinc-300">
                 <div className="relative flex-1 w-full">
@@ -157,42 +148,43 @@ const PersonalDashboardClient = ({userEmail}: PersonalDashboardClientProps) => {
                 <StatusFilter 
                   value={filter}
                   onChange={setFilter}
-                  // onChange={handleFilterChange}
                 />
               </div>
             </CardContent>
           </Card>
-        </div>
+        </div> */}
+        <TaskInputForm
+          form={form} 
+          onSubmit={handleAddTask} 
+          isLoading={isLoading} 
+          filter={filter} 
+          setFilter={setFilter}
+        />
 
         {/* Tasks List */}
-        <div className="space-y-4">
+        {/* <div className="space-y-4">
           <div className="flex items-center justify-between px-2">
             <h3 className="text-sm font-semibold text-zinc-500 uppercase tracking-wider">
               {filter === 'all' ? 'All Tasks' : `${filter} Tasks`}
             </h3>
             <Badge variant="outline" className="border-zinc-800 text-zinc-500">
               {totalCount}
-              {/* {filteredTasks.length} */}
             </Badge>
           </div>
 
           <div className="space-y-3">
             {isLoading ? (
-            // {loadingTasks ? (
               Array(3).fill(0).map((_, i) => (
                 <div key={i} className="p-1">
                   <Skeleton className="h-20 w-full bg-zinc-900/50 border border-zinc-800 rounded-2xl" />
                 </div>
               ))
             ) : tasks.length > 0 ? (
-            // ) : filteredTasks.length > 0 ? (
               tasks.map(task => (
-              // filteredTasks.map(task => (
                 <div key={task.id} className="transition-all hover:translate-x-1">
                   <TaskComponent
                     task={task}
                     onChangeStatus={updateStatus}
-                    // onChangeStatus={handleChangeStatus}
                     onDelete={(t) => deleteTask(t.id)}
                   />
                 </div>
@@ -206,7 +198,16 @@ const PersonalDashboardClient = ({userEmail}: PersonalDashboardClientProps) => {
               </div>
             )}
           </div>
-        </div>
+        </div> */}
+
+        <TaskList 
+        tasks={tasks}
+        totalCount={totalCount}
+        isLoading={isLoading}
+        filter={filter}
+        updateStatus={updateStatus}
+        deleteTask={deleteTask}
+        />
       </div>
     </div>
   )
