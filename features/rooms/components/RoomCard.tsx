@@ -2,7 +2,7 @@
 
 import { Room } from '@/store/useRooms'
 import { BiChevronRight, BiHash } from 'react-icons/bi';
-import RoomCardDropdown from './RoomCardDropdown';
+import RoomCardDropdown from './RoomCardDropdown/RoomCardDropdown';
 import Link from 'next/link';
 
 type Props = {

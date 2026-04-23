@@ -2,12 +2,12 @@
 'use client';
 
 // import { useEffect, useState } from "react";
+// import { useRoomsStore } from "@/store/useRooms";
 import RoomCard from "@/features/rooms/components/RoomCard";
 import { useDashboard } from "../hooks/use-dashboard";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-// import { useRoomsStore } from "@/store/useRooms";
 import { BiPlusCircle, BiLayer, BiHash } from "react-icons/bi";
 
 interface DashboardClientProps {

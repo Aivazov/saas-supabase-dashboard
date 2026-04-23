@@ -1,13 +1,14 @@
 // store/useRooms.ts
 import { create } from "zustand";
 import { supabase } from "@/lib/supabase-client";
+import { Room } from "@/types/room";
 
-export type Room = {
-  id: string;
-  name: string;
-  created_by: string;
-  created_at: string;
-};
+// export type Room = {
+//   id: string;
+//   name: string;
+//   created_by: string;
+//   created_at: string;
+// };
 
 type RoomsState = {
   rooms: Room[];
@@ -35,16 +36,7 @@ export const useRoomsStore = create<RoomsState>((set, get) => ({
     } finally {
       set({ loadingRooms: false });
     }
-    // const { data, error } = await supabase.from("rooms").select("*");
-    // if (error) throw error;
-    // set({ rooms: data || [] });
   },
-
-  // createRoom: async (room) => {
-  //   set((state) => ({
-  //     rooms: [...state.rooms, room],
-  //   }))
-  // },
 
   createRoom: async (roomName: string) => {
     set({ loadingWhenCreatingRoom: true });

@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import { Status } from '@/constants/status'
+import { Status } from '@/types/status'
 import { StatusFilter } from '@/features/tasks/components/StatusFilter'
 import { TaskFormValues } from '@/features/tasks/schemas/task-schema'
 import { SubmitHandler, UseFormReturn } from 'react-hook-form'

@@ -1,10 +1,10 @@
 // features/tasks/components/TaskComponent.tsx
 
-import { Task } from '@/constants/task';
+import { Task } from '@/types/task';
 import { StatusSelector } from '@/features/tasks/components/StatusSelector'
 import StatusBadge from './StatusBadge';
 import DeleteTaskBtn from './DeleteTaskBtn';
-import { Status } from '@/constants/status';
+import { Status } from '@/types/status';
 
 type TaskComponentProps = {
   task: Task;
@@ -14,29 +14,6 @@ type TaskComponentProps = {
 
 const TaskComponent = ({task, onChangeStatus, onDelete}: TaskComponentProps) => {
   return (
-    // <div
-    //   key={task.id}
-    //   className="bg-gray-700 p-4 rounded-xl flex justify-between w-full"
-    // >
-    //   <div>
-    //     <p>{task.title}</p>
-    //     <StatusBadge status={task.status} />
-    //   </div>
-
-    //   {/* STATUS SELECTOR */}
-    //   <div className="flex gap-2">
-        
-    //     <StatusSelector 
-    //       value={task.status}
-    //       onChange={(e) => onChangeStatus(e, task)}
-    //     />
-
-    //     {onDelete && (
-    //       <DeleteTaskBtn onConfirm={() => onDelete(task)} />
-    //     )}
-    //   </div>
-    // </div>
-
     <div
       key={task.id}
       className="group bg-zinc-900/40 border border-zinc-800 hover:border-zinc-700 p-4 rounded-2xl flex items-center justify-between w-full transition-all duration-200"

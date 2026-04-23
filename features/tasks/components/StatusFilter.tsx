@@ -1,7 +1,7 @@
 // features/tasks/components/StatusFilter.tsx
 
-import TasksDropdown from '@/features/tasks/components/TasksDropdown'
-import { FILTER_OPTIONS, FilterValue } from '@/constants/status'
+import TasksDropdown from '@/features/tasks/components/TaskDropdown/TasksDropdown'
+import { FILTER_OPTIONS, FilterValue } from '@/types/status'
 
 type Props = {
   value: FilterValue

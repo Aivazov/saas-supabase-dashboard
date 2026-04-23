@@ -2,10 +2,14 @@
 
 import { create } from "zustand";
 import { supabase } from "@/lib/supabase-client";
+import { RoomMember } from "@/types/room-member";
+import { Room } from "@/types/room";
 
 type RoomDetailsState = {
-  room: any | null;
-  members: any[];
+  room: Room | null; // .select("*")
+  // members: any[];
+  members: RoomMember[];
+
 
   loadingRoom: boolean;
   loadingMembers: boolean;

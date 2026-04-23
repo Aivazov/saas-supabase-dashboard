@@ -1,4 +1,4 @@
-// constants/status.ts
+// types/status.ts
 export type Option<T extends string> = {
   value: T
   name: string

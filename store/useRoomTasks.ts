@@ -2,7 +2,7 @@
 
 import { create } from "zustand";
 import { supabase } from "@/lib/supabase-client";
-import { Status } from "@/constants/status";
+import { Status } from "@/types/status";
 
 type RoomTasksState = {
   roomTasks: any[];

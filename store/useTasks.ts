@@ -1,6 +1,6 @@
 // store/useTasks.ts
-import { Status } from "@/constants/status";
-import { Task } from "@/constants/task";
+import { Status } from "@/types/status";
+import { Task } from "@/types/task";
 import { supabase } from "@/lib/supabase-client";
 // import { Status } from "@/types/components";
 import { create } from "zustand";

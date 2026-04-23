@@ -1,4 +1,4 @@
-// constants/tasks.ts
+// types/tasks.ts
 import { Tables } from "@/types/supabase";
 import { Status } from "./status";
 

@@ -2,8 +2,8 @@
 
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton";
-import { Status } from "@/constants/status";
-import { Task } from "@/constants/task";
+import { Status } from "@/types/status";
+import { Task } from "@/types/task";
 import TaskComponent from "@/features/tasks/components/TaskComponent"
 import { BiTask } from "react-icons/bi"
 

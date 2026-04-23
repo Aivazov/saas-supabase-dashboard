@@ -1,7 +1,7 @@
 // features/tasks/components/StatusSelector.tsx
 
-import TasksDropdown from '@/features/tasks/components/TasksDropdown'
-import { Status, STATUS_OPTIONS } from '@/constants/status'
+import TasksDropdown from '@/features/tasks/components/TaskDropdown/TasksDropdown'
+import { Status, STATUS_OPTIONS } from '@/types/status'
 
 type Props = {
   value: Status
