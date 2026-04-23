@@ -1,7 +1,9 @@
+// features/tasks/components/TaskComponent.tsx
+
 import { Task } from '@/constants/task';
-import { StatusSelector } from '@/services/StatusSelector'
-import StatusBadge from '../StatusBadge';
-import DeleteTaskBtn from '../DeleteTaskBtn';
+import { StatusSelector } from '@/features/tasks/components/StatusSelector'
+import StatusBadge from './StatusBadge';
+import DeleteTaskBtn from './DeleteTaskBtn';
 import { Status } from '@/constants/status';
 
 type TaskComponentProps = {

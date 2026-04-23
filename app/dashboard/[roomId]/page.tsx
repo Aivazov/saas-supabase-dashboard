@@ -1,4 +1,4 @@
-import RoomPageClient from "@/components/RoomPageClient";
+import RoomPageClient from "@/features/rooms/components/RoomPageClient";
 
 export default function Room({ params }: { params: { roomId: string } }) {
   return <RoomPageClient />;

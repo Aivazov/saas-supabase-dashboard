@@ -1,4 +1,4 @@
-// components/RoomCardDropdown.tsx
+// features/rooms/components/RoomCardDropdown.tsx
 "use client";
 
 import { useState } from "react";
@@ -23,9 +23,9 @@ import { BiDotsVerticalRounded, BiEditAlt, BiTrash } from "react-icons/bi";
 // import { useRouter } from "next/navigation";
 // import { BiSolidEdit } from "react-icons/bi";
 // import { MdDeleteOutline } from "react-icons/md";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
-import ModalCancelBtn from "./Modal/ModalCancelBtn";
+import { Input } from "../../../components/ui/input";
+import { Button } from "../../../components/ui/button";
+import ModalCancelBtn from "../../../components/Modal/ModalCancelBtn";
 
 
 type RoomCardDropdownProps = {

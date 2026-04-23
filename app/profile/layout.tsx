@@ -1,6 +1,6 @@
-// app/settings/layout.tsx
+// app/profile/layout.tsx
 
-import SidebarClient from '@/components/SidebarClient';
+import SidebarClient from '@/widgets/SidebarClient';
 import React from 'react'
 
 type ProfileLayoutProps = {

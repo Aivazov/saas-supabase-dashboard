@@ -1,7 +1,10 @@
+// features/tasks/components/DeleteTaskBtn.tsx
+
 import { useState } from 'react'
-import MyModal from './MyModal'
+// import MyModal from '../../../components/MyModal'
 // import { useTasks } from '@/store/useTasks';
 import { Button } from '@headlessui/react';
+import MyModal from '@/components/MyModal';
 
 type Props = {
   onConfirm: () => Promise<void> | void;
@@ -30,7 +33,6 @@ const DeleteTaskBtn = ({ onConfirm }: Props) => {
       setLoading(false);
     }
   }
-
 
   return (
     <>

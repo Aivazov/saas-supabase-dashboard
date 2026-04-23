@@ -2,7 +2,7 @@
 
 import { redirect } from 'next/navigation'
 import { getServerUser } from '@/lib/supabase-server'
-import DashboardClient from '@/components/DashboardClient'
+import DashboardClient from '@/features/dashboard/components/DashboardClient'
 
 export default async function Dashboard() {
   const user = await getServerUser()

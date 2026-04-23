@@ -1,4 +1,4 @@
-// components/RoomPageClient.tsx
+// features/rooms/components/RoomPageClient.tsx
 'use client';
 
 import { useEffect, useState } from "react";
@@ -9,7 +9,7 @@ import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/com
 import Link from "next/link";
 import { useRoomDetailsStore } from "@/store/userRoomDetails";
 import { useRoomTasksStore } from "@/store/useRoomTasks";
-import TaskComponent from "./Task/TaskComponent";
+import TaskComponent from "../../tasks/components/TaskComponent";
 import { Status } from "@/constants/status";
 import { Task } from "@/constants/task";
 import { Skeleton } from "@/components/ui/skeleton";

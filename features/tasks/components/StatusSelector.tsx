@@ -1,6 +1,6 @@
-// services/StatusSelector.tsx
+// features/tasks/components/StatusSelector.tsx
 
-import TodoListbox from '@/components/TodoListbox'
+import TasksDropdown from '@/features/tasks/components/TasksDropdown'
 import { Status, STATUS_OPTIONS } from '@/constants/status'
 
 type Props = {
@@ -10,7 +10,7 @@ type Props = {
 
 export function StatusSelector({ value, onChange }: Props) {
   return (
-    <TodoListbox<Status>
+    <TasksDropdown<Status>
       value={value}
       onChange={onChange}
       options={STATUS_OPTIONS}

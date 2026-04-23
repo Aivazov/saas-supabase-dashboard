@@ -1,17 +1,17 @@
-//components/TodoListbox.tsx
+//components/TasksDropdown.tsx
 
 import { Fragment, useRef, useState } from 'react'
 import { Listbox, Portal, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import { Option } from '@/constants/status';
 
-type TodoListboxProps<T extends string>  = {
+type TasksDropdownProps<T extends string>  = {
   value: T;
   onChange: (value: T) => void;
   options: readonly Option<T>[];
 }
 
-export default function TodoListbox<T extends string>({ value, onChange, options }: TodoListboxProps<T>) {
+export default function TasksDropdown<T extends string>({ value, onChange, options }: TasksDropdownProps<T>) {
   const selectedOption = options.find(item => item.value === value)
   
   const buttonRef = useRef<HTMLButtonElement | null>(null)

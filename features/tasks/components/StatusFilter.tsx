@@ -1,5 +1,6 @@
-// services/StatusFilter.tsx
-import TodoListbox from '@/components/TodoListbox'
+// features/tasks/components/StatusFilter.tsx
+
+import TasksDropdown from '@/features/tasks/components/TasksDropdown'
 import { FILTER_OPTIONS, FilterValue } from '@/constants/status'
 
 type Props = {
@@ -9,7 +10,7 @@ type Props = {
 
 export function StatusFilter({ value, onChange }: Props) {
   return (
-    <TodoListbox<FilterValue>
+    <TasksDropdown<FilterValue>
       value={value}
       onChange={onChange}
       options={FILTER_OPTIONS}

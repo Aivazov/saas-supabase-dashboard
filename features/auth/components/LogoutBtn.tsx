@@ -1,32 +1,17 @@
-// components/LogoutBtn.tsx
-'use client';
+// features/auth/components/LogoutBtn.tsx
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import MyModal from './MyModal';
-import { useAuthStore } from '@/store/useAuth';
+import MyModal from '@/components/MyModal';
+import { useLogout } from '../hooks/use-logout';
 
 // interface LogoutProps {}
 
 const LogoutBtn = () => {
-// const LogoutBtn = (props: Props) => {
-  const router = useRouter();
-  const [isOpen, setIsOpen] = useState(false)
-
-  const { logout } = useAuthStore();
-  
-  const openModal = () => {
-    setIsOpen(true);
-  }
-  
-  const handleSignOut = async () => {
-    try {
-      await logout();
-      router.push('/auth');
-    } catch (error) {
-      console.error('Logout error: ', error);
-    } 
-  };
+  const {
+    isOpen,
+    setIsOpen,
+    openModal,
+    handleSignOut
+  } = useLogout();
 
   return (
     <>

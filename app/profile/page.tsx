@@ -1,6 +1,6 @@
-// app/settings/page.tsx
+// app/profile/page.tsx
 
-import ProfilePageClient from "@/components/ProfilePageClient";
+import ProfilePageClient from "@/features/profile/components/ProfilePageClient";
 import { getServerUser, getServerProfile } from "@/lib/supabase-server";
 import { redirect } from "next/navigation";
 

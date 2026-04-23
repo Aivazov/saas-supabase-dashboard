@@ -1,8 +1,8 @@
-//components/SidebarClient.tsx
+// widgets/SidebarClient.tsx
 
 'use client';
 import { usePathname } from 'next/navigation'
-import LogoutBtn from './LogoutBtn'
+import LogoutBtn from '../features/auth/components/LogoutBtn'
 import Link from 'next/link'
 import { BiCategory, BiCog, BiCommand, BiUser } from 'react-icons/bi';
 

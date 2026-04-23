@@ -1,6 +1,6 @@
 // app/dashboard/layout.tsx
 
-import SidebarClient from '@/components/SidebarClient';
+import SidebarClient from '@/widgets/SidebarClient';
 import React from 'react'
 
 type DashboardLayoutProps = {
