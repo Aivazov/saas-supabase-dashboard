@@ -7,7 +7,6 @@ import { Status } from '@/types/status'
 import { StatusFilter } from '@/features/tasks/components/StatusFilter'
 import { TaskFormValues } from '@/features/tasks/schemas/task-schema'
 import { SubmitHandler, UseFormReturn } from 'react-hook-form'
-// import React from 'react'
 import { BiFilterAlt, BiPlus } from 'react-icons/bi'
 
 type TaskInputFormProps = {
@@ -29,23 +28,6 @@ const TaskInputForm = ({
     <div className="grid grid-cols-1 gap-4">
       <Card className="bg-zinc-900/40 border-zinc-800 backdrop-blur-md">
         <CardContent className="p-4">
-          {/* <div className="flex flex-col md:flex-row gap-4 items-center">
-            <div className="relative flex-1 w-full">
-              <Input
-                className="bg-zinc-950/50 border-zinc-800 focus:ring-cyan-500/20 pl-4 h-12 text-zinc-200"
-                value={newTask}
-                onChange={(e) => setNewTask(e.target.value)}
-                placeholder="Capture a new thought or task..."
-              />
-            </div>
-            <Button 
-              onClick={handleAdd}
-              disabled={loadingTasks || !newTask}
-              className="w-full md:w-auto rounded-md bg-cyan-600 hover:bg-cyan-500 text-white h-12 px-8 flex items-center justify-center gap-1 cursor-pointer"
-            >
-              <BiPlus className="text-xl mr-1" /> <span>Add Task</span>
-            </Button>
-          </div> */}
 
           <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col md:flex-row gap-4 items-center text-zinc-300">
             <div className="relative flex-1 w-full">

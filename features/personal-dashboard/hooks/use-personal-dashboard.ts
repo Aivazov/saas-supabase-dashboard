@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { TaskFormValues, taskSchema } from "@/features/tasks/schemas/task-schema";
 import { Status } from "@/types/status";
 import { Task } from "@/types/task";
-import { useGenerateTasks } from "@/hooks/useGenerateTasks";
+import { useGenerateTasks } from "@/features/tasks/hooks/use-generate-tasks";
 
 
 export const usePersonalDashboard = () => {

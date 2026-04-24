@@ -3,12 +3,12 @@
 import { Button } from '@/components/ui/button'
 import { IoSparkles } from 'react-icons/io5'
 
-type Props = {
+type GenerateTasksBtnProps = {
   generateTasks: () => Promise<void>;
   aiLoading: boolean;
 }
 
-const GenerateTasksBtn = ({ generateTasks, aiLoading }: Props) => {
+const GenerateTasksBtn = ({ generateTasks, aiLoading }: GenerateTasksBtnProps) => {
   return (
     <Button
       onClick={generateTasks}

@@ -1,19 +1,14 @@
 // features/tasks/components/DeleteTaskBtn.tsx
 
 import { useState } from 'react'
-// import MyModal from '../../../components/MyModal'
-// import { useTasks } from '@/store/useTasks';
 import { Button } from '@headlessui/react';
 import MyModal from '@/components/MyModal';
 
-type Props = {
+type DeleteTaskBtnProps = {
   onConfirm: () => Promise<void> | void;
-  // taskId: string;
 }
 
-const DeleteTaskBtn = ({ onConfirm }: Props) => {
-// const DeleteTaskBtn = ({ taskId }: Props) => {
-  // const { deleteTask } = useTasks();
+const DeleteTaskBtn = ({ onConfirm }: DeleteTaskBtnProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 

@@ -1,15 +1,11 @@
 // features/rooms/components/RoomCard.tsx
 
-import { Room } from '@/store/useRooms'
-import { BiChevronRight, BiHash } from 'react-icons/bi';
-import RoomCardDropdown from './RoomCardDropdown/RoomCardDropdown';
 import Link from 'next/link';
+import { Room } from '@/types/room';
+import RoomCardDropdown from './RoomCardDropdown/RoomCardDropdown';
+import { BiChevronRight, BiHash } from 'react-icons/bi';
 
-type Props = {
-  room: Room;
-}
-
-const RoomCard = ({ room }: Props) => {
+const RoomCard = ({ room }: {room: Room}) => {
   return (
     <div 
       className="group relative bg-zinc-900/40 border border-zinc-800 hover:border-cyan-500/50 rounded-2xl p-5 transition-all duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:-translate-y-1"

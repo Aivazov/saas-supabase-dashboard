@@ -1,4 +1,4 @@
-// hooks/useGenerateTasks.ts
+// features/tasks/hooks/useGenerateTasks.ts
 
 import { useTasks } from "@/store/useTasks";
 import { useState } from "react";

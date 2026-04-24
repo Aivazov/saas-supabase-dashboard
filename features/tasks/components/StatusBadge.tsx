@@ -2,10 +2,6 @@
 
 import { Status } from "@/types/status";
 
-type StatusBadgeProps = {
-  status: Status;
-}
-
 const statusMap = {
   todo: {
     label: 'Todo',
@@ -24,7 +20,7 @@ const statusMap = {
   }
 }
 
-const StatusBadge = ({status}: StatusBadgeProps) => {
+const StatusBadge = ({status}: {status: Status}) => {
   const config = statusMap[status];
 
   return (
