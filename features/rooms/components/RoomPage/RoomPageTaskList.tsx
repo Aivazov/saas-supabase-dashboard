@@ -1,3 +1,5 @@
+// features/rooms/components/RoomPage/RoomPageTaskList.tsx
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -64,7 +66,8 @@ const RoomPageTaskList = ({
             <Button 
               onClick={handleCreateRoomTask} 
               // onClick={() => handleCreateRoomTask(taskTitle)} 
-              disabled={loadingRoomTasks || !taskTitle}
+              disabled={Boolean(loadingRoomTasks) || taskTitle.length === 0}
+              // disabled={loadingRoomTasks || !taskTitle}
               className="bg-cyan-600 hover:bg-cyan-500 text-white"
             >
               <BiPlus className="w-5 h-5" />

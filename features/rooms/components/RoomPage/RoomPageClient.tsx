@@ -10,15 +10,22 @@
 // import { Status } from "@/types/status";
 // import { Task } from "@/types/task";
 
+
+// import RoomPageTaskList from "./RoomPageTaskList";
+import dynamic from "next/dynamic";
+
 import RoomPageHeader from "./RoomPageHeader";
-import RoomPageTaskList from "./RoomPageTaskList";
 import RoomMembers from "./RoomMembers";
 import { useRoomPage } from "../../hooks/use-room-page";
-import { useParams } from "next/navigation";
-import { useRoomData } from "../../hooks/use-room-data";
-import { useRoomActions } from "../../hooks/use-room-actions";
-import { useRoomUI } from "../../hooks/use-room-ui";
+// import { useParams } from "next/navigation";
+// import { useRoomData } from "../../hooks/use-room-data";
+// import { useRoomActions } from "../../hooks/use-room-actions";
+// import { useRoomUI } from "../../hooks/use-room-ui";
 
+const RoomPageTaskList = dynamic(
+  () => import('./RoomPageTaskList'),
+  { ssr: false }
+)
 // import { Button } from "@/components/ui/button";
 // import { Input } from "@/components/ui/input";
 // import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
