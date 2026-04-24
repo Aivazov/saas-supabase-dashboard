@@ -1,7 +1,7 @@
 // features/rooms/components/RoomCardDropdown/DeleteRoomDialog.tsx
 
 import ModalCancelBtn from '@/components/Modal/ModalCancelBtn'
-import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog'
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog'
 import { Input } from '@/components/ui/input'
 
 type DeleteRoomDialogProps = {
@@ -25,8 +25,8 @@ const DeleteRoomDialog = ({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className="mt-6">
-          <ModalCancelBtn />
-          {/* <AlertDialogCancel className="bg-zinc-800 hover:bg-zinc-700 border-none">Cancel</AlertDialogCancel> */}
+          {/* <ModalCancelBtn /> */}
+          <AlertDialogCancel className="bg-zinc-800 hover:bg-zinc-700 border-none">Cancel</AlertDialogCancel>
           <AlertDialogAction 
             onClick={handleDelete} 
             className="bg-red-600 hover:bg-red-500 cursor-pointer"
