@@ -1,18 +1,13 @@
 // features/auth/components/DashboardClient.tsx
 'use client';
 
+import dynamic from "next/dynamic";
 import { useDashboard } from "../hooks/use-dashboard";
 import DashboardContentSection from "./DashboardContentSection";
-import DashboardRoomCreationForm from "./DashboardRoomCreationForm";
-
-// import { useEffect, useState } from "react";
-// import { useRoomsStore } from "@/store/useRooms";
-// import RoomCard from "@/features/rooms/components/RoomCard";
-
-// import { Button } from "@/components/ui/button";
-// import { Input } from "@/components/ui/input";
-// import { BiPlusCircle, BiLayer, BiHash } from "react-icons/bi";
-// import NoRoomsBlock from "./NoRoomsBlock";
+const DashboardRoomCreationForm = dynamic(
+  () => import("./DashboardRoomCreationForm"),
+  { ssr: false }
+);
 interface DashboardClientProps {
   userEmail?: string | null;
 }
@@ -23,36 +18,7 @@ export default function DashboardClient({ userEmail }: DashboardClientProps) {
     loadingWhenCreatingRoom,
     form,
     handleCreateRoom,
-    // currentRoomId,
-    // setCurrentRoomId,
   } = useDashboard();
-
-  // const { rooms, loadingWhenCreatingRoom, fetchRooms, createRoom } = useRoomsStore();
-
-  // const [currentRoomId, setCurrentRoomId] = useState<string | null>(null);
-  // const [roomName, setRoomName] = useState("");
-
-  // useEffect(() => {
-  //   fetchRooms();
-  // }, [fetchRooms]);
-
-  // useEffect(() => {
-  //   if (rooms.length && !currentRoomId) {
-  //     setCurrentRoomId(rooms[0].id);
-  //   }
-  // }, [rooms, currentRoomId]);
-
-  // async function handleCreateRoom() {
-  //   if (!roomName) return;
-
-  //   const room = await createRoom(roomName);
-
-  //   if (room) {
-  //     setCurrentRoomId(room.id);
-  //     setRoomName("");
-  //   }
-  // }
-
 
   return (
     <div className="min-h-screen bg-[#09090b] text-zinc-100 p-6 md:p-10">

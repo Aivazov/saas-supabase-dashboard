@@ -54,7 +54,6 @@ const TaskInputForm = ({
             <StatusFilter 
               value={filter}
               onChange={setFilter}
-              // onChange={handleFilterChange}
             />
           </div>
         </CardContent>

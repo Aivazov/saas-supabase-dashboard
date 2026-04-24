@@ -1,4 +1,3 @@
-// types/supabase.ts
 export type Json =
   | string
   | number
@@ -166,7 +165,9 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      is_room_admin: { Args: { check_room_id: string }; Returns: boolean }
+      is_room_member: { Args: { check_room_id: string }; Returns: boolean }
+      is_room_owner: { Args: { check_room_id: string }; Returns: boolean }
     }
     Enums: {
       [_ in never]: never

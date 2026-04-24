@@ -1,10 +1,14 @@
 // features/personal-dashboard/components/PersonalDashboardClient.tsx
 
 'use client';
+import dynamic from "next/dynamic";
 import { usePersonalDashboard } from "../hooks/use-personal-dashboard";
 import PersonalDashboardHeader from "./PersonalDashboardHeader";
-import TaskInputForm from "./TaskInputForm";
 import TaskList from "./TaskList";
+const TaskInputForm = dynamic(
+  () => import("./TaskInputForm"),
+  { ssr: false }
+);
 
 interface PersonalDashboardClientProps {
   userEmail?: string | null;
