@@ -22,8 +22,8 @@ type RoomPageTaskListProps = {
   setTaskTitle: (value: string) => void;
   // setTaskTitle: (value: SetStateAction<string>) => void;
   loadingRoomTasks: boolean;
-  // handleCreateRoomTask: (title: string) => Promise<void>;
-  handleCreateRoomTask: () => Promise<void>;
+  handleCreateRoomTask: (title: string) => Promise<void>;
+  // handleCreateRoomTask: () => Promise<void>;
   // handleChangeStatus: (taskId: string, status: Status) => void;
   handleChangeStatus: (status: Status, task: Task) => void;
   roomTasks: any[];
@@ -64,8 +64,8 @@ const RoomPageTaskList = ({
               className="bg-zinc-800/50 border-zinc-700 focus:ring-cyan-500 text-zinc-300"
             />
             <Button 
-              onClick={handleCreateRoomTask} 
-              // onClick={() => handleCreateRoomTask(taskTitle)} 
+              // onClick={handleCreateRoomTask} 
+              onClick={() => handleCreateRoomTask(taskTitle)} 
               disabled={Boolean(loadingRoomTasks) || taskTitle.length === 0}
               // disabled={loadingRoomTasks || !taskTitle}
               className="bg-cyan-600 hover:bg-cyan-500 text-white"
@@ -86,6 +86,7 @@ const RoomPageTaskList = ({
                   <TaskComponent
                     task={task}
                     onChangeStatus={handleChangeStatus}
+                    // onChangeStatus={handleChangeStatus}
                     onDelete={(t) => deleteRoomTask(t.id, roomId)}
                   />
                 </div>

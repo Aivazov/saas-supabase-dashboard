@@ -25,7 +25,8 @@ export const useRoomData = (roomId: string) => {
     fetchRoom(roomId);
     fetchMembers(roomId);
     fetchRoomTasks(roomId);
-  }, [roomId]);
+  }, [roomId, fetchRoom, fetchMembers, fetchRoomTasks]);
+  // }, [roomId]);
 
   return {
     room,

@@ -7,13 +7,15 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { BiGroup, BiTrash, BiUserPlus } from "react-icons/bi";
 import { Badge } from "@/components/ui/badge";
 import { RoomMember } from "@/types/room-member";
+import { MouseEventHandler } from "react";
 
 type RoomMembersProps = {
   members: RoomMember[];
   loadingMembers: boolean;
   inviteEmail: string;
   setInviteEmail: (v: string) => void;
-  handleInvite: () => void;
+  handleInvite: (email: string) => void;
+  // handleInvite: () => void;
   deleteMember: (memberId: string, roomId: string) => void;
   roomId: string;
 };
@@ -41,7 +43,12 @@ const RoomMembers = ({
             onChange={(e) => setInviteEmail(e.target.value)}
             className="bg-zinc-800/50 border-zinc-700 text-sm"
           />
-          <Button onClick={handleInvite} variant="outline" className="border-zinc-700 text-cyan-700 hover:text-cyan-400">
+          <Button
+            onClick={() => handleInvite(inviteEmail)}
+            // onClick={handleInvite}
+            variant="outline"
+            className="border-zinc-700 text-cyan-700 hover:text-cyan-400"
+          >
             <BiUserPlus className="mr-2 h-4 w-4" /> Invite
           </Button>
         </div>

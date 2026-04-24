@@ -6,6 +6,10 @@ import dynamic from "next/dynamic";
 import RoomPageHeader from "./RoomPageHeader";
 import RoomMembers from "./RoomMembers";
 import { useRoomPage } from "../../hooks/use-room-page";
+import { useRoomUI } from "../../hooks/use-room-ui";
+import { useRoomData } from "../../hooks/use-room-data";
+import { useRoomActions } from "../../hooks/use-room-actions";
+import { useParams } from "next/navigation";
 const RoomPageTaskList = dynamic(
   () => import('./RoomPageTaskList'),
   { ssr: false }
@@ -43,14 +47,14 @@ export default function RoomPageClient() {
     room,
     members,
     loadingMembers,
+    taskTitle,
+    setTaskTitle,
     inviteEmail,
     setInviteEmail,
     handleInvite,
     deleteMember,
     roomTasks,
     loadingRoomTasks,
-    taskTitle,
-    setTaskTitle,
     handleCreateRoomTask,
     handleChangeStatus,
     deleteRoomTask,
