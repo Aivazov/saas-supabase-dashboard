@@ -7,6 +7,8 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { BiGroup, BiTrash, BiUserPlus } from 'react-icons/bi';
 import { Badge } from '@/components/ui/badge';
 import { RoomMember } from '@/types/room-member';
+import DeleteModal from '@/components/Modal/DeleteModal';
+import { useState } from 'react';
 
 type RoomMembersProps = {
   members: RoomMember[];
@@ -15,7 +17,7 @@ type RoomMembersProps = {
   setInviteEmail: (v: string) => void;
   handleInvite: (email: string) => void;
   // handleInvite: () => void;
-  deleteMember: (memberId: string, roomId: string) => void;
+  deleteMember: (memberId: string, roomId: string) => Promise<void>;
   roomId: string;
 };
 
@@ -28,6 +30,12 @@ const RoomMembers = ({
   deleteMember,
   roomId,
 }: RoomMembersProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const handleOpenModal = () => {
+    setIsOpen(true);
+  };
   return (
     <Card className='bg-zinc-900/40 border-zinc-800 backdrop-blur-md h-fit'>
       <CardHeader>
@@ -83,11 +91,19 @@ const RoomMembers = ({
                   <Button
                     variant='ghost'
                     size='icon'
-                    className='text-zinc-500 hover:text-red-400 hover:bg-red-400/10'
-                    onClick={() => deleteMember(m.id, roomId)}
+                    className='text-zinc-500 hover:text-red-400 hover:bg-red-400/10 cursor-pointer'
+                    // onClick={() => deleteMember(m.id, roomId)}
+                    onClick={handleOpenModal}
                   >
                     <BiTrash className='w-4 h-4' />
                   </Button>
+                  <DeleteModal
+                    title='Confirm removing'
+                    description='Are you sure you want to remove this member?'
+                    handleAction={() => deleteMember(m.id, roomId)}
+                    isOpen={isOpen}
+                    setIsOpen={setIsOpen}
+                  />
                 </div>
               ))}
         </div>
