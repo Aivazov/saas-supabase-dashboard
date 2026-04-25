@@ -2,7 +2,7 @@
 
 import ModalCancelBtn from '@/components/Modal/ModalCancelBtn'
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog'
-import { Input } from '@/components/ui/input'
+// import { Input } from '@/components/ui/input'
 
 type DeleteRoomDialogProps = {
   isDeleteOpen: boolean;
