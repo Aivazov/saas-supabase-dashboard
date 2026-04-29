@@ -141,3 +141,6 @@ supabase/
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# stackdupms
+*.stackdump

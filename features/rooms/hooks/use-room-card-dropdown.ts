@@ -1,10 +1,14 @@
 // features/rooms/hooks/use-room-card-dropdown.ts
 
-import { useRoomsStore } from "@/store/useRooms";
-import { RoomCardDropdownProps } from "@/types/room-card-dropdown";
-import { useState } from "react";
+import { useRoomsStore } from '@/store/useRooms';
+import { RoomCardDropdownProps } from '@/types/room-card-dropdown';
+import { useState } from 'react';
+import { toast } from 'sonner';
 
-export const useRoomCardDropdown = ({ roomId, currentName }: RoomCardDropdownProps) => {
+export const useRoomCardDropdown = ({
+  roomId,
+  currentName,
+}: RoomCardDropdownProps) => {
   const { renameRoom, deleteRoom } = useRoomsStore();
 
   const [isRenameOpen, setRenameOpen] = useState(false);
@@ -17,7 +21,7 @@ export const useRoomCardDropdown = ({ roomId, currentName }: RoomCardDropdownPro
       setRenameOpen(false);
     } catch (err) {
       console.error(err);
-      alert("Error with renaming the room");
+      toast.error('Error with renaming the room');
     }
   };
 
@@ -27,7 +31,7 @@ export const useRoomCardDropdown = ({ roomId, currentName }: RoomCardDropdownPro
       setDeleteOpen(false);
     } catch (err) {
       console.error(err);
-      alert("Error with deleting the room");
+      toast.error('Error with deleting the room');
     }
   };
 
@@ -40,5 +44,5 @@ export const useRoomCardDropdown = ({ roomId, currentName }: RoomCardDropdownPro
     setNewName,
     handleRename,
     handleDelete,
-  }
-}
+  };
+};

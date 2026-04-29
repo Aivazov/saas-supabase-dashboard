@@ -1,27 +1,31 @@
 // features/rooms/components/RoomPage/RoomMembers.tsx
 
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import { BiGroup, BiTrash, BiUserPlus } from 'react-icons/bi';
+import { BiGroup, BiTrash } from 'react-icons/bi';
 import { Badge } from '@/components/ui/badge';
 import { RoomMember } from '@/types/room-member';
 import DeleteModal from '@/components/Modal/DeleteModal';
 import { useState } from 'react';
+import { useAuthStore } from '@/store/useAuth';
+import { calculateRole, permissions } from '../../logic/permissions';
+import InviteMember from './InviteMember';
+import { Room } from '@/types/room';
 
 type RoomMembersProps = {
+  room: Room | null;
   members: RoomMember[];
   loadingMembers: boolean;
   inviteEmail: string;
   setInviteEmail: (v: string) => void;
   handleInvite: (email: string) => void;
-  // handleInvite: () => void;
   deleteMember: (memberId: string, roomId: string) => Promise<void>;
   roomId: string;
 };
 
 const RoomMembers = ({
+  room,
   members,
   loadingMembers,
   inviteEmail,
@@ -31,7 +35,9 @@ const RoomMembers = ({
   roomId,
 }: RoomMembersProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
+
+  const { user } = useAuthStore();
+  const role = calculateRole(user?.id ?? null, room, members);
 
   const handleOpenModal = () => {
     setIsOpen(true);
@@ -42,22 +48,13 @@ const RoomMembers = ({
         <CardTitle className='text-xl flex items-center gap-2 text-zinc-300'>
           <BiGroup className='text-cyan-500' /> Members
         </CardTitle>
-        <div className='pt-2 flex flex-col gap-2 text-zinc-300'>
-          <Input
-            placeholder='Email address...'
-            value={inviteEmail}
-            onChange={(e) => setInviteEmail(e.target.value)}
-            className='bg-zinc-800/50 border-zinc-700 text-sm'
+        {permissions?.canInviteMember(role) && (
+          <InviteMember
+            inviteEmail={inviteEmail}
+            setInviteEmail={setInviteEmail}
+            handleInvite={handleInvite}
           />
-          <Button
-            onClick={() => handleInvite(inviteEmail)}
-            // onClick={handleInvite}
-            variant='outline'
-            className='border-zinc-700 text-cyan-700 hover:text-cyan-400'
-          >
-            <BiUserPlus className='mr-2 h-4 w-4' /> Invite
-          </Button>
-        </div>
+        )}
       </CardHeader>
       <CardContent>
         <div className='space-y-4'>
@@ -88,7 +85,18 @@ const RoomMembers = ({
                       {m.role}
                     </Badge>
                   </div>
-                  <Button
+                  {permissions?.canDeleteMember(role) && (
+                    <Button
+                      variant='ghost'
+                      size='icon'
+                      className='text-zinc-500 hover:text-red-400 hover:bg-red-400/10 cursor-pointer'
+                      // onClick={() => deleteMember(m.id, roomId)}
+                      onClick={handleOpenModal}
+                    >
+                      <BiTrash className='w-4 h-4' />
+                    </Button>
+                  )}
+                  {/* <Button
                     variant='ghost'
                     size='icon'
                     className='text-zinc-500 hover:text-red-400 hover:bg-red-400/10 cursor-pointer'
@@ -96,7 +104,7 @@ const RoomMembers = ({
                     onClick={handleOpenModal}
                   >
                     <BiTrash className='w-4 h-4' />
-                  </Button>
+                  </Button> */}
                   <DeleteModal
                     title='Confirm removing'
                     description='Are you sure you want to remove this member?'

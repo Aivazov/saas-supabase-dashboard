@@ -1,22 +1,25 @@
 // features/rooms/hooks/use-dashboard.ts
 
-import { useRoomsStore } from "@/store/useRooms";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { RoomFormValues, roomSchema } from "../schemas/room-schema";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useRoomsStore } from '@/store/useRooms';
+import { RoomFormValues, roomSchema } from '../schemas/room-schema';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { calculateRole } from '@/features/rooms/logic/permissions';
 
 export const useDashboard = () => {
-  const { rooms, loadingWhenCreatingRoom, fetchRooms, createRoom } = useRoomsStore();
+  const { rooms, loadingWhenCreatingRoom, fetchRooms, createRoom } =
+    useRoomsStore();
 
   const [currentRoomId, setCurrentRoomId] = useState<string | null>(null);
+  // const role = calculateRole(user?.id, currentRoomId, members);
   // const [roomName, setRoomName] = useState("");
 
   const form = useForm<RoomFormValues>({
     resolver: zodResolver(roomSchema),
-    mode: "onChange",
+    mode: 'onChange',
     defaultValues: { name: '' },
-  })
+  });
 
   useEffect(() => {
     fetchRooms();
@@ -36,7 +39,7 @@ export const useDashboard = () => {
       form.reset();
       // setRoomName("");
     }
-  }
+  };
 
   return {
     rooms,
@@ -44,6 +47,6 @@ export const useDashboard = () => {
     currentRoomId,
     setCurrentRoomId,
     form,
-    handleCreateRoom
-  }
-}
+    handleCreateRoom,
+  };
+};

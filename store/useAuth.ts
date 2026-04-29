@@ -1,19 +1,25 @@
 // store/useAuth.ts
 
-import { create } from 'zustand'
-import * as authApi from '@/lib/auth'
+import { create } from 'zustand';
+import { supabase } from '@/lib/supabase-client';
+import * as authApi from '@/lib/auth';
 
 type AuthState = {
-  loading: boolean
-  error: string | null
-  user: any | null
+  loading: boolean;
+  error: string | null;
+  user: any | null;
 
-  login: (email: string, password: string) => Promise<void>
-  register: (email: string, password: string, nickname: string) => Promise<void>
-  logout: () => Promise<void>
+  login: (email: string, password: string) => Promise<void>;
+  register: (
+    email: string,
+    password: string,
+    nickname: string,
+  ) => Promise<void>;
+  logout: () => Promise<void>;
 
-  setError: (error: string | null) => void
-}
+  initUser: () => Promise<void>;
+  setError: (error: string | null) => void;
+};
 
 export const useAuthStore = create<AuthState>((set) => ({
   loading: false,
@@ -23,14 +29,14 @@ export const useAuthStore = create<AuthState>((set) => ({
   setError: (error) => set({ error }),
 
   login: async (email, password) => {
-    set({ loading: true, error: null })
+    set({ loading: true, error: null });
     try {
-      const data = await authApi.signIn(email, password)
-      set({ user: data.user })
+      const data = await authApi.signIn(email, password);
+      set({ user: data.user });
     } catch (err: any) {
-      set({ error: err.message })
+      set({ error: err.message });
     } finally {
-      set({ loading: false })
+      set({ loading: false });
     }
   },
 
@@ -46,18 +52,25 @@ export const useAuthStore = create<AuthState>((set) => ({
   // },
 
   register: async (email, password, nickname) => {
-    set({ loading: true, error: null })
+    set({ loading: true, error: null });
     try {
-      await authApi.signUp(email, password, nickname)
+      await authApi.signUp(email, password, nickname);
     } catch (err: any) {
-      set({ error: err.message })
+      set({ error: err.message });
     } finally {
-      set({ loading: false })
+      set({ loading: false });
     }
   },
 
   logout: async () => {
-    await authApi.signOut()
-    set({ user: null })
+    await authApi.signOut();
+    set({ user: null });
   },
-}))
+
+  initUser: async () => {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (user) set({ user });
+  },
+}));
