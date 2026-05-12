@@ -1,9 +1,8 @@
 // features/rooms/logic/permissions.ts
 
+import { AppRole } from '@/types/permission';
 import { Room } from '@/types/room';
 import { RoomMember } from '@/types/room-member';
-
-export type AppRole = 'owner' | 'admin' | 'member';
 
 export const calculateRole = (
   currentUserId: string | null,
@@ -42,7 +41,58 @@ export const permissions = {
   canCreateRoomTask: (role: AppRole) => role === 'owner' || role === 'admin',
 
   canInviteMember: (role: AppRole) => role === 'owner' || role === 'admin',
-  canDeleteMember: (role: AppRole) => role === 'owner' || role === 'admin',
 
   canChangeTask: (role: AppRole) => role === 'owner' || role === 'admin',
+  canDeleteMember: ({
+    currentRole,
+    targetRole,
+    isSelf,
+  }: {
+    currentRole: AppRole;
+    targetRole: AppRole;
+    isSelf: boolean;
+  }) => {
+    // OWNER
+    if (currentRole === 'owner') {
+      // owner не может удалить себя
+      if (isSelf) return false;
+
+      // owner может удалить всех остальных
+      return true;
+    }
+
+    // ADMIN
+    if (currentRole === 'admin') {
+      // admin может удалить себя
+      if (isSelf) return true;
+
+      // admin может удалить только member
+      return targetRole === 'member';
+    }
+
+    // MEMBER
+    if (currentRole === 'member') {
+      // member может удалить только себя
+      return isSelf;
+    }
+
+    return false;
+  },
 };
+
+// export const permissions = {
+//   canCreateRoom: (role: AppRole) =>
+//     role === 'owner' || role === 'admin' || role === 'member',
+
+//   canDeleteRoom: (role: AppRole) => role === 'owner',
+
+//   canViewRoom: (role: AppRole) => role !== 'member',
+
+//   // canCreateRoomTask: (role: AppRole) => role === 'owner',
+//   canCreateRoomTask: (role: AppRole) => role === 'owner' || role === 'admin',
+
+//   canInviteMember: (role: AppRole) => role === 'owner' || role === 'admin',
+//   canDeleteMember: (role: AppRole) => role === 'owner' || role === 'admin',
+
+//   canChangeTask: (role: AppRole) => role === 'owner' || role === 'admin',
+// };

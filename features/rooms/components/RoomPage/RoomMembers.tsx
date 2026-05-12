@@ -12,6 +12,7 @@ import { useAuthStore } from '@/store/useAuth';
 import { calculateRole, permissions } from '../../logic/permissions';
 import InviteMember from './InviteMember';
 import { Room } from '@/types/room';
+import { AppRole } from '@/types/permission';
 
 type RoomMembersProps = {
   room: Room | null;
@@ -38,6 +39,8 @@ const RoomMembers = ({
 
   const { user } = useAuthStore();
   const role = calculateRole(user?.id ?? null, room, members);
+  // console.log('role in RoomMember: ', role);
+  // console.log('members in RoomMember: ', members);
 
   const handleOpenModal = () => {
     setIsOpen(true);
@@ -67,53 +70,57 @@ const RoomMembers = ({
                     className='h-12 w-full bg-zinc-800/50 rounded-xl'
                   />
                 ))
-            : members.map((m) => (
-                <div
-                  key={m.id}
-                  className='flex items-center justify-between p-3 rounded-xl bg-zinc-800/30 border border-zinc-800/50 hover:border-zinc-700 transition-colors text-zinc-300'
-                >
-                  <div className='flex flex-col'>
-                    <span className='text-sm font-medium truncate max-w-[120px]'>
-                      {m.profiles?.nickname ||
-                        m.user?.email?.split('@')[0] ||
-                        'User'}
-                    </span>
-                    <Badge
-                      variant='secondary'
-                      className='w-fit text-[10px] mt-1 bg-zinc-800 text-zinc-400'
-                    >
-                      {m.role}
-                    </Badge>
-                  </div>
-                  {permissions?.canDeleteMember(role) && (
-                    <Button
-                      variant='ghost'
-                      size='icon'
-                      className='text-zinc-500 hover:text-red-400 hover:bg-red-400/10 cursor-pointer'
-                      // onClick={() => deleteMember(m.id, roomId)}
-                      onClick={handleOpenModal}
-                    >
-                      <BiTrash className='w-4 h-4' />
-                    </Button>
-                  )}
-                  {/* <Button
-                    variant='ghost'
-                    size='icon'
-                    className='text-zinc-500 hover:text-red-400 hover:bg-red-400/10 cursor-pointer'
-                    // onClick={() => deleteMember(m.id, roomId)}
-                    onClick={handleOpenModal}
+            : members.map((m) => {
+                const isSelf = m.user_id === user?.id;
+                // console.log('isSelf RoomMembers: ', isSelf);
+
+                const targetRole = m.role as AppRole;
+                return (
+                  <div
+                    key={m.id}
+                    className='flex items-center justify-between p-3 rounded-xl bg-zinc-800/30 border border-zinc-800/50 hover:border-zinc-700 transition-colors text-zinc-300'
                   >
-                    <BiTrash className='w-4 h-4' />
-                  </Button> */}
-                  <DeleteModal
-                    title='Confirm removing'
-                    description='Are you sure you want to remove this member?'
-                    handleAction={() => deleteMember(m.id, roomId)}
-                    isOpen={isOpen}
-                    setIsOpen={setIsOpen}
-                  />
-                </div>
-              ))}
+                    <div className='flex flex-col'>
+                      <span className='text-sm font-medium truncate max-w-[120px]'>
+                        {m.profiles?.nickname ||
+                          m.user?.email?.split('@')[0] ||
+                          'User'}
+                      </span>
+                      <Badge
+                        variant='secondary'
+                        className='w-fit text-[10px] mt-1 bg-zinc-800 text-zinc-400'
+                      >
+                        {m.role}
+                      </Badge>
+                    </div>
+
+                    {/* DELETE BTN */}
+                    {permissions?.canDeleteMember({
+                      currentRole: role,
+                      targetRole,
+                      isSelf,
+                    }) && (
+                      <Button
+                        variant='ghost'
+                        size='icon'
+                        className='text-zinc-500 hover:text-red-400 hover:bg-red-400/10 cursor-pointer'
+                        // onClick={() => deleteMember(m.id, roomId)}
+                        onClick={handleOpenModal}
+                      >
+                        <BiTrash className='w-4 h-4' />
+                      </Button>
+                    )}
+
+                    <DeleteModal
+                      title='Confirm removing'
+                      description='Are you sure you want to remove this member?'
+                      handleAction={() => deleteMember(m.id, roomId)}
+                      isOpen={isOpen}
+                      setIsOpen={setIsOpen}
+                    />
+                  </div>
+                );
+              })}
         </div>
       </CardContent>
     </Card>

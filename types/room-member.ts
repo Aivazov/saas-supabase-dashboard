@@ -1,8 +1,12 @@
 // types/room-member.ts
 
+import { AppRole } from './permission';
+
 export type RoomMember = {
   id: string;
-  role: string | null;
+  user_id: string | null;
+  role: string;
+  // role: AppRole;
   profiles: {
     email: string | null;
     nickname: string | null;

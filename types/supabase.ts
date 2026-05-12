@@ -39,21 +39,21 @@ export type Database = {
         Row: {
           id: string
           joined_at: string | null
-          role: string | null
+          role: string
           room_id: string | null
           user_id: string | null
         }
         Insert: {
           id?: string
           joined_at?: string | null
-          role?: string | null
+          role?: string
           room_id?: string | null
           user_id?: string | null
         }
         Update: {
           id?: string
           joined_at?: string | null
-          role?: string | null
+          role?: string
           room_id?: string | null
           user_id?: string | null
         }

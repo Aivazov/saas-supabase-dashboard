@@ -8,7 +8,6 @@ import { toast } from 'sonner';
 
 type RoomDetailsState = {
   room: Room | null; // .select("*")
-  // members: any[];
   members: RoomMember[];
 
   loadingRoom: boolean;
@@ -45,7 +44,7 @@ export const useRoomDetailsStore = create<RoomDetailsState>((set, get) => ({
     set({ loadingMembers: true, error: null });
     const { data, error } = await supabase
       .from('room_members')
-      .select('id, role, profiles(email, nickname)')
+      .select('id, user_id, role, profiles(email, nickname)')
       .eq('room_id', roomId);
 
     if (error) return set({ error: error.message, loadingMembers: false });
@@ -54,8 +53,6 @@ export const useRoomDetailsStore = create<RoomDetailsState>((set, get) => ({
   },
 
   inviteMember: async (roomId, email) => {
-    const trimmedEmail = email.trim();
-
     const { data: user } = await supabase
       .from('profiles')
       .select('id, email')
@@ -106,7 +103,6 @@ export const useRoomDetailsStore = create<RoomDetailsState>((set, get) => ({
   deleteMember: async (memberId, roomId) => {
     const prevMembers = get().members;
 
-    // оптимистично убираем
     set({
       members: prevMembers.filter((m) => m.id !== memberId),
     });
@@ -117,7 +113,6 @@ export const useRoomDetailsStore = create<RoomDetailsState>((set, get) => ({
       .eq('id', memberId);
 
     if (error) {
-      // откат если ошибка
       toast.error('Error with deleting');
       set({ members: prevMembers, error: error.message });
       return;
