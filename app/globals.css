@@ -49,7 +49,8 @@
 }
 
 :root {
-  --background: oklch(1 0 0);
+  --background: oklch(0.145 0 0); /* dark theme bg */
+  /* --background: oklch(1 0 0); light theme bg */
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
@@ -127,5 +128,7 @@
   }
   html {
     @apply font-sans;
+    /* background-color: #000b18; */
+    background-color: #000b18 !important;
   }
 }
