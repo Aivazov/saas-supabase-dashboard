@@ -5,7 +5,8 @@ import { StatusSelector } from '@/features/tasks/components/StatusSelector';
 import { Status } from '@/types/status';
 import StatusBadge from '@/features/tasks/components/StatusBadge';
 import DeleteTaskBtn from '@/features/tasks/components/DeleteTaskBtn';
-import { AppRole, permissions } from '../../logic/permissions';
+import { permissions } from '../../logic/permissions';
+import { AppRole } from '@/types/permission';
 
 type RoomTaskComponentProps = {
   task: Task;
